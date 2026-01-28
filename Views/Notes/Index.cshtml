@@ -1,0 +1,27 @@
+@model IEnumerable<SecureNotesApp.Models.Note>
+
+@{
+    ViewData["Title"] = "Ghi chú của tôi";
+}
+
+<div class="container mt-4">
+
+    <div class="row">
+        @foreach (var item in Model) {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@item.Title</h5>
+                        <p class="card-text text-muted small">
+                            Ngày tạo: @item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                        </p>
+                        <p class="text-muted">*********** (Nội dung đã mã hóa)</p> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark btn-sm stretched-link">
+                            Mở khóa xem nội dung
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

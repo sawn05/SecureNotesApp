@@ -1,0 +1,26 @@
+@model SecureNotesApp.Models.Note
+
+@{
+    ViewData["Title"] = "Chi tiết";
+}
+
+<div class="container mt-5">
+    <div class="card border-primary">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h3 class="mb-0">@Model.Title</h3>
+            <span class="badge bg-light text-dark">Đã giải mã thành công</span>
+        </div>
+        <div class="card-body">
+            <pre class="fs-5" style="white-space: pre-wrap;">@Model.PlainContent</pre>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-outline-secondary">← Quay lại</a>
+            
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger float-end ms-2" ...>Xóa</a>
+            
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning float-end">
+                <i class="fas fa-pen"></i> Sửa
+            </a>
+        </div>
+    </div>
+</div>

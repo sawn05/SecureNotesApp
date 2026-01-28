@@ -8,8 +8,14 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow:
+    0 0 0 0.1rem white,
+    0 0 0 0.25rem #258cfb;
 }
 
 html {
@@ -21,11 +27,70 @@ body {
   margin-bottom: 60px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+/* Khung bao ngoài của Navbar */
+.custom-navbar {
+  background-color: #ffffff;
+  border-radius: 12px; /* Bo tròn 4 góc */
+  padding: 10px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ tạo hiệu ứng nổi */
+}
+
+/* Style cho các link menu ở giữa */
+.nav-menu {
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #6c757d; /* Màu chữ xám mặc định */
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.nav-item:hover {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+/* Style đặc biệt cho nút đang chọn (Active) - Giống nút Prompts trong hình */
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    #2fa4e7 0%,
+    #00d2ff 100%
+  ); /* Màu gradient xanh */
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(47, 164, 231, 0.3);
+}
+
+/* Style cho nút "Thêm Prompt" bên phải */
+.btn-add-prompt {
+  background-color: #2b7bfb;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+  box-shadow: 0 2px 5px rgba(43, 123, 251, 0.3);
+  color: white;
+}
+
+.btn-add-prompt:hover {
+  background-color: #1a6fd8;
+  color: white;
 }

@@ -1,0 +1,36 @@
+@model SecureNotesApp.Models.Note
+
+@{
+    ViewData["Title"] = "Viết ghi chú mới";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4>📝 Viết ghi chú an toàn</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
+                        <div class="mb-3">
+                            <label class="form-label">Tiêu đề (Không mã hóa - Để tìm kiếm)</label>
+                            <input asp-for="Title" class="form-control" placeholder="Ví dụ: Mật khẩu ngân hàng..." />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung mật (Sẽ được mã hóa AES-256)</label>
+                            <textarea asp-for="PlainContent" class="form-control" rows="10" placeholder="Nhập nội dung bí mật vào đây..."></textarea>
+                            <span asp-validation-for="PlainContent" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">🔒 Mã hóa & Lưu</button>
+                        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

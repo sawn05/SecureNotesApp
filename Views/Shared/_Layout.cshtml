@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SecureNotesApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SecureNotesApp</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -30,7 +31,38 @@
                     <partial name="_LoginPartial" />
                 </div>
             </div>
-        </nav>
+        </nav> -->
+
+        <div class="container mt-3">
+            <div class="custom-navbar d-flex justify-content-between align-items-center">
+                <div class="nav-brand d-flex align-items-center">
+                    <i class="fas fa-sticky-note text-warning fs-4 me-2"></i>
+                    <span class="fw-bold text-dark fs-5">QUẢN LÝ GHI CHÚ</span>
+                </div>
+
+                <div class="nav-menu d-flex align-items-center">
+                    <a href="#" class="nav-item active">
+                        <i class="fas fa-brain me-1"></i> Prompts
+                    </a>
+                    
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-file-alt me-1"></i> Ghi chú
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-user me-1"></i> Tài khoản
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="fas fa-calendar-check me-1"></i> Tasks
+                    </a>
+                </div>
+
+                <div class="nav-action">
+                    <a href="/Notes/Create" class="btn btn-primary btn-add-prompt">
+                        <i class="fas fa-plus me-1"></i> Thêm Prompt
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
