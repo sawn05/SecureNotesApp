@@ -12,27 +12,6 @@
 </head>
 <body>
     <header>
-        <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SecureNotesApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav> -->
-
         <div class="container mt-3">
             <div class="custom-navbar d-flex justify-content-between align-items-center">
                 <div class="nav-brand d-flex align-items-center">
@@ -41,12 +20,12 @@
                 </div>
 
                 <div class="nav-menu d-flex align-items-center">
-                    <a href="#" class="nav-item active">
-                        <i class="fas fa-brain me-1"></i> Prompts
+                    <a href="/Notes/Index" class="nav-item active">
+                        <i class="fa-solid fa-clipboard me-1"></i> All notes
                     </a>
-                    
-                    <a href="#" class="nav-item">
-                        <i class="fas fa-file-alt me-1"></i> Ghi chú
+
+                    <a href="/Notes/Dashboard" class="nav-item">
+                        <i class="fa-solid fa-chart-line me-1"></i> Dashboard
                     </a>
                     <a href="#" class="nav-item">
                         <i class="fas fa-user me-1"></i> Tài khoản
@@ -57,10 +36,12 @@
                 </div>
 
                 <div class="nav-action">
-                    <a href="/Notes/Create" class="btn btn-primary btn-add-prompt">
-                        <i class="fas fa-plus me-1"></i> Thêm Prompt
+                    <a href="/Notes/Create" class="btn btn-primary btn-add-note">
+                        <i class="fas fa-plus me-1"></i> Thêm Note
                     </a>
                 </div>
+
+                <partial name="_LoginPartial" />
             </div>
         </div>
     </header>

@@ -94,3 +94,30 @@ body {
   background-color: #1a6fd8;
   color: white;
 }
+
+/* Style riêng cho nút Logout để nó giống hệt các link khác */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #6c757d; /* Màu xám giống menu */
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #fee2e2; /* Màu nền đỏ nhạt khi hover */
+  color: #dc3545; /* Chữ đỏ đậm */
+}
+
+/* Tinh chỉnh lại khoảng cách nếu tên người dùng quá dài */
+.nav-item span {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}

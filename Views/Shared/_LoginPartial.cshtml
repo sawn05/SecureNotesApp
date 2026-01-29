@@ -2,25 +2,28 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+<div class="d-flex align-items-center ms-3" style="gap: 10px;"> 
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a class="nav-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Quản lý tài khoản">
+            <i class="fas fa-user-circle text-primary fs-5 me-1"></i> 
+            <span class="fw-bold">@User.Identity?.Name</span>
+        </a>
+
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-item btn-logout border-0 bg-transparent">
+                <i class="fas fa-sign-out-alt text-danger me-1"></i> Thoát
+            </button>
         </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
-</ul>
+    }
+    else
+    {
+        <a class="nav-item" asp-area="Identity" asp-page="/Account/Register">
+            <i class="fas fa-user-plus me-1"></i> Đăng ký
+        </a>
+
+        <a class="nav-item fw-bold text-primary" asp-area="Identity" asp-page="/Account/Login">
+            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+        </a>
+    }
+</div>

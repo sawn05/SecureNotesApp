@@ -1,0 +1,86 @@
+@model SecureNotesApp.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Thống kê";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary"><i class="fas fa-chart-line"></i> Tổng quan hoạt động</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-primary shadow h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="card-title">Tổng số Ghi chú</h5>
+                        <h1 class="display-4 fw-bold">@Model.TotalNotes</h1>
+                    </div>
+                    <i class="fas fa-book fa-4x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-success shadow h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="card-title">Hôm nay viết được</h5>
+                        <h1 class="display-4 fw-bold">@Model.NotesToday</h1>
+                    </div>
+                    <i class="fas fa-pen-fancy fa-4x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">📊 Tần suất viết ghi chú (7 ngày qua)</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="activityChart" height="100"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Lấy thẻ canvas
+    const ctx = document.getElementById('activityChart').getContext('2d');
+
+    // Nhận dữ liệu từ C# truyền sang (Serialize sang JSON)
+    const labels = @Html.Raw(Json.Serialize(Model.ChartLabels));
+    const data = @Html.Raw(Json.Serialize(Model.ChartData));
+
+    // Cấu hình biểu đồ
+    new Chart(ctx, {
+        type: 'line', // Loại biểu đồ: Đường (Line) hoặc Cột (Bar)
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượng ghi chú',
+                data: data,
+                borderColor: '#0d6efd', // Màu đường kẻ (Xanh dương)
+                backgroundColor: 'rgba(13, 110, 253, 0.1)', // Màu nền mờ bên dưới
+                borderWidth: 3,
+                tension: 0.3, // Độ cong mềm mại của đường
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1 // Chỉ hiện số nguyên (1, 2, 3...) không hiện số lẻ
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Ẩn chú thích cho gọn
+                }
+            }
+        }
+    });
+</script>

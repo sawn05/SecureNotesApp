@@ -21,17 +21,85 @@ namespace SecureNotesApp.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        // public async Task<IActionResult> Index()
+        // {
+        //     var userId = _userManager.GetUserId(User);
+
+        //     var notes = await _context.Notes
+        //         .Where(n => n.UserId == userId)
+        //         .OrderByDescending(n => n.CreatedAt)
+        //         .ToListAsync();
+
+        //     return View(notes);
+        // }
+
+        public async Task<IActionResult> Index(string searchString)
         {
             var userId = _userManager.GetUserId(User);
 
-            var notes = await _context.Notes
+            var notes = from n in _context.Notes
+                        where n.UserId == userId
+                        select n;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                notes = notes.Where(s => s.Title.Contains(searchString));
+                ViewData["CurrentFilter"] = searchString;
+            }
+
+            return View(await notes.OrderByDescending(n => n.CreatedAt).ToListAsync());
+        }
+
+
+        // --- ACTION DASHBOARD ---
+        public async Task<IActionResult> Dashboard()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            // Lấy tất cả ghi chú của user này (Chỉ lấy cột CreatedAt cho nhẹ)
+            var allNotes = await _context.Notes
                 .Where(n => n.UserId == userId)
-                .OrderByDescending(n => n.CreatedAt)
+                .Select(n => n.CreatedAt) 
                 .ToListAsync();
 
-            return View(notes);
+            // 1. Tính tổng số
+            int total = allNotes.Count;
+
+            // 2. Tính số ghi chú hôm nay
+            int today = allNotes.Count(n => n.Date == DateTime.Today);
+
+            // 3. Chuẩn bị dữ liệu cho Biểu đồ (7 ngày gần nhất)
+            // Tạo 2 mảng rỗng để chứa dữ liệu
+            int[] data = new int[7];
+            string[] labels = new string[7];
+
+            for (int i = 0; i < 7; i++)
+            {
+                // Tính ngược từ hôm nay về quá khứ (Hôm nay là index 6, hôm qua là 5...)
+                // Hoặc xếp từ quá khứ đến hiện tại (Ngày kia là 0, ..., Hôm nay là 6)
+                
+                // Cách làm: Lấy ngày hiện tại trừ đi (6 - i) ngày
+                DateTime dateToCheck = DateTime.Today.AddDays(-(6 - i));
+                
+                // Đếm số note trong ngày đó
+                data[i] = allNotes.Count(n => n.Date == dateToCheck);
+                
+                // Tạo nhãn ngày (ví dụ: 29/01)
+                labels[i] = dateToCheck.ToString("dd/MM");
+            }
+
+            // Đóng gói vào ViewModel
+            var model = new DashboardViewModel
+            {
+                TotalNotes = total,
+                NotesToday = today,
+                ChartData = data,
+                ChartLabels = labels
+            };
+
+            return View(model);
         }
+
 
         public IActionResult Create()
         {
@@ -43,7 +111,7 @@ namespace SecureNotesApp.Controllers
         public async Task<IActionResult> Create(Note note)
         {
             var userId = _userManager.GetUserId(User);
-            note.UserId = userId ?? "UserTam"; // Tránh lỗi null tạm thời
+            note.UserId = userId ?? "UserTam"; 
             note.CreatedAt = DateTime.Now;
 
             if (!string.IsNullOrEmpty(note.PlainContent))
@@ -51,13 +119,10 @@ namespace SecureNotesApp.Controllers
                 note.EncryptedContent = SecurityHelper.Encrypt(note.PlainContent);
             }
 
-            // Xóa các lỗi validation đã biết
             ModelState.Remove("UserId");
             ModelState.Remove("User");
             ModelState.Remove("EncryptedContent");
 
-            // --- BẮT ĐẦU ĐOẠN MÃ THÁM TỬ (DEBUG) ---
-            // Đoạn này sẽ in lỗi ra Terminal cho bạn xem
             if (!ModelState.IsValid)
             {
                 Console.WriteLine("----------- ĐANG CÓ LỖI VALIDATION -----------");
@@ -66,13 +131,11 @@ namespace SecureNotesApp.Controllers
                     var modelStateVal = ModelState[modelStateKey];
                     foreach (var error in modelStateVal.Errors)
                     {
-                        // In tên trường bị lỗi và nguyên nhân
                         Console.WriteLine($"❌ Trường: {modelStateKey} - Lỗi: {error.ErrorMessage}");
                     }
                 }
                 Console.WriteLine("----------------------------------------------");
             }
-            // --- KẾT THÚC ĐOẠN MÃ THÁM TỬ ---
 
             if (ModelState.IsValid)
             {
@@ -129,7 +192,6 @@ namespace SecureNotesApp.Controllers
 
 
 
-        // --- 1. MỞ FORM SỬA (GET) ---
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -137,36 +199,31 @@ namespace SecureNotesApp.Controllers
             var note = await _context.Notes.FindAsync(id);
             if (note == null) return NotFound();
 
-            // BẢO MẬT: Kiểm tra xem người đang sửa có phải chủ nhân không
             var userId = _userManager.GetUserId(User);
             if (note.UserId != userId)
             {
-                return Forbid(); // Chặn ngay nếu định sửa trộm của người khác
+                return Forbid(); // 403
             }
 
-            // GIẢI MÃ: Để hiển thị nội dung cũ lên form
+            // Giải mã để hiển thị trong form
             note.PlainContent = SecurityHelper.Decrypt(note.EncryptedContent);
 
             return View(note);
         }
 
-        // --- 2. LƯU THAY ĐỔI (POST) ---
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Note note)
         {
             if (id != note.Id) return NotFound();
 
-            // Lấy ID User hiện tại để đảm bảo không bị hack đổi chủ sở hữu
             var userId = _userManager.GetUserId(User);
 
-            // MÃ HÓA: Nội dung mới người dùng vừa sửa
             if (!string.IsNullOrEmpty(note.PlainContent))
             {
                 note.EncryptedContent = SecurityHelper.Encrypt(note.PlainContent);
             }
 
-            // BỎ QUA LỖI VALIDATION (Giống hệt bên Create)
             ModelState.Remove("UserId");
             ModelState.Remove("User");
             ModelState.Remove("EncryptedContent");
@@ -175,19 +232,17 @@ namespace SecureNotesApp.Controllers
             {
                 try
                 {
-                    // KỸ THUẬT AN TOÀN: 
-                    // Thay vì update thẳng, ta lấy dữ liệu cũ từ DB lên để đối chiếu
+                    // Lấy dữ liệu cũ từ DB lên để đối chiếu
                     var existingNote = await _context.Notes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
                     
-                    // Check quyền lần cuối
                     if (existingNote == null || existingNote.UserId != userId)
                     {
                         return Forbid();
                     }
 
                     // Gán lại các giá trị quan trọng để không bị mất
-                    note.UserId = userId; // Giữ nguyên chủ sở hữu
-                    note.CreatedAt = existingNote.CreatedAt; // Giữ nguyên ngày tạo ban đầu
+                    note.UserId = userId; 
+                    note.CreatedAt = existingNote.CreatedAt; 
 
                     _context.Update(note);
                     await _context.SaveChangesAsync();
@@ -197,7 +252,6 @@ namespace SecureNotesApp.Controllers
                     if (!_context.Notes.Any(e => e.Id == note.Id)) return NotFound();
                     else throw;
                 }
-                // Sửa xong thì quay về trang chi tiết để xem kết quả
                 return RedirectToAction(nameof(Details), new { id = note.Id });
             }
             return View(note);
