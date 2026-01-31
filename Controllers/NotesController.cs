@@ -256,5 +256,17 @@ namespace SecureNotesApp.Controllers
             }
             return View(note);
         }
+
+
+        public async Task<IActionResult> GetNoteContent(int id)
+        {
+            var note = await _context.Notes.FindAsync(id);
+            var userId = _userManager.GetUserId(User);
+
+            if (note == null || note.UserId != userId) return NotFound();
+
+            // Giải mã để trả về cho Modal
+            return Content(SecurityHelper.Decrypt(note.EncryptedContent));
+        }
     }
 }

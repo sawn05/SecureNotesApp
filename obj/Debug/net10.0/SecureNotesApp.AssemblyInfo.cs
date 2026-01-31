@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SecureNotesApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33d8b3390427eb34d435655c9dc06cc34f57ee19")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d338dcece252c49668dbf34a57544b9f618ed84")]
 [assembly: System.Reflection.AssemblyProductAttribute("SecureNotesApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SecureNotesApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

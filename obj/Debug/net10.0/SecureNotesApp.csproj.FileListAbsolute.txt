@@ -317,4 +317,4 @@ C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-arm64\native\Micro
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\app.db
-C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-klr2ffay82-klr2ffay82.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-n4f31txn4r-n4f31txn4r.gz
