@@ -7,12 +7,19 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tasks.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notes.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SecureNotesApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lexend:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 </head>
 <body>
     <header>
-        <div class="container mt-3">
+        <!-- <div class="container mt-3">
             <div class="custom-navbar d-flex justify-content-between align-items-center">
                 <div class="nav-brand d-flex align-items-center">
                     <i class="fas fa-sticky-note text-warning fs-4 me-2"></i>
@@ -43,19 +50,38 @@
 
                 <partial name="_LoginPartial" />
             </div>
-        </div>
+        </div> -->
     </header>
-    <div class="container">
+
+    <div class="container-fluid p-0">
+        <div class="d-flex">
+            
+            <div class="bg-dark" style="width: 250px; min-height: 100vh;">
+                <partial name="_Sidebar" />
+            </div>
+
+            <div class="flex-grow-1 bg-light">
+                <main role="main" class="p-4">
+                    
+                    @RenderBody() 
+                    
+                </main>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    </div> -->
 
-    <footer class="border-top footer text-muted">
+    <!-- <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - SecureNotesApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer> -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

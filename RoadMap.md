@@ -13,9 +13,9 @@ GIAI ĐOẠN 2: CRUD CƠ BẢN & LUỒNG DỮ LIỆU AN TOÀN
     4. Xử lý chức năng SỬA & XÓA - Done
 
 GIAI ĐOẠN 3: NÂNG CẤP GIAO DIỆN (AJAX & LAYOUT)
-    1. Dựng Layout 2 cột
-    2. Chuyển đổi sang Partial View
-    3. Viết Javascript (Fetch API)
+    1. Dựng Layout 2 cột - DONE
+    2. Chuyển đổi sang Partial View - DONE
+    3. Viết Javascript (Fetch API) - DONE
 
 GIAI ĐOẠN 4: TÍNH NĂNG BẢO MẬT NÂNG CAO
     1. Ghi chú bảo vệ bằng mật khẩu lớp 2

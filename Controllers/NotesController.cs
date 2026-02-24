@@ -265,8 +265,26 @@ namespace SecureNotesApp.Controllers
 
             if (note == null || note.UserId != userId) return NotFound();
 
-            // Giải mã để trả về cho Modal
             return Content(SecurityHelper.Decrypt(note.EncryptedContent));
+        }
+
+
+        [HttpGet]
+        public IActionResult Accounts()
+        {
+            return View(); 
+        }
+
+        [HttpGet]
+        public IActionResult Tasks()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult NotesList()
+        {
+            return View();
         }
     }
 }

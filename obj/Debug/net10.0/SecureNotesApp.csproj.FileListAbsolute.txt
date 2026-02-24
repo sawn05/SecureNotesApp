@@ -317,4 +317,13 @@ C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-arm64\native\Micro
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Sángg\SecureNotesApp\bin\Debug\net10.0\app.db
-C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-n4f31txn4r-n4f31txn4r.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\n467qgrdsv-{0}-3dnhzpzxqr-3dnhzpzxqr.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\pvau153iqu-{0}-anxeq8sbov-anxeq8sbov.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\mppd768qbn-{0}-j0zcxwleqj-j0zcxwleqj.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\fs0k9sr5p1-{0}-zj77fujsj6-zj77fujsj6.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\cdik8uaqq5-{0}-5a1eosrn3u-5a1eosrn3u.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\8mr06vowim-{0}-1d72pa5x1s-1d72pa5x1s.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\rh0438io0i-{0}-1zdo91988v-1zdo91988v.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\ttgtfsn20o-{0}-t2cqv6ed1u-t2cqv6ed1u.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-pvplc7cjhy-pvplc7cjhy.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\t73q7a1vlg-{0}-knh1ms6ke5-knh1ms6ke5.gz
