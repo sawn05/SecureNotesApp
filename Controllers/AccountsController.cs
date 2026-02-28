@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SecureNotesApp.Controllers
 {
-    public class NotesController : Controller
+    public class AccountsController : Controller
     {
         public IActionResult Index()
         {

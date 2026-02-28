@@ -15,7 +15,7 @@
     <nav class="sidebar-nav">
         <div class="nav-section">
             <div class="nav-section-title">Chính</div>
-            <a asp-controller="Notes" asp-action="Index" class="nav-item @(currentController == "Notes" && currentAction == "Index" ? "active" : "")">
+            <a asp-controller="Home" asp-action="Index" class="nav-item @(currentController == "Home" && currentAction == "Index" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"
@@ -32,7 +32,7 @@
                 <span>Trang chủ</span>
             </a>
 
-            <a asp-controller="Notes" asp-action="Prompts" class="nav-item @(currentController == "Notes" && currentAction == "Prompts" ? "active" : "")">
+            <a asp-controller="Prompts" asp-action="Index" class="nav-item @(currentController == "Prompts" && currentAction == "Index" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"
@@ -49,7 +49,7 @@
                 <span>Prompts</span>
             </a>
 
-            <a asp-controller="Notes" asp-action="NotesList" class="nav-item @(currentController == "Notes" && currentAction == "NotesList" ? "active" : "")">
+            <a asp-controller="Notes" asp-action="Index" class="nav-item @(currentController == "Notes" && currentAction == "Index" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"
@@ -69,7 +69,7 @@
 
         <div class="nav-section">
             <div class="nav-section-title">Bảo mật</div>
-            <a asp-controller="Notes" asp-action="Accounts" class="nav-item @(currentController == "Notes" && currentAction == "Accounts" ? "active" : "")">
+            <a asp-controller="Accounts" asp-action="Index" class="nav-item @(currentController == "Accounts" && currentAction == "Index" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"
@@ -86,7 +86,7 @@
                 <span>Tài khoản</span>
             </a>
 
-            <a asp-controller="Notes" asp-action="Tasks" class="nav-item @(currentController == "Notes" && currentAction == "Tasks" ? "active" : "")">
+            <a asp-controller="Tasks" asp-action="Index" class="nav-item @(currentController == "Tasks" && currentAction == "Index" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"
