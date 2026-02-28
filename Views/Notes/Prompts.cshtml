@@ -1,0 +1,170 @@
+@{
+    ViewData["Title"] = "Quản lý Prompts";
+    // Layout = "_Layout"; // Bỏ comment nếu dùng layout chung
+
+    // 1. DỮ LIỆU THỐNG KÊ
+    var stats = new[] {
+        new { Label = "Tổng Prompts", Value = "28", Grad1 = "#667eea", Grad2 = "#764ba2", IconPath = "M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" },
+        new { Label = "Yêu thích", Value = "12", Grad1 = "#f093fb", Grad2 = "#f5576c", IconPath = "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" },
+        new { Label = "Danh mục", Value = "6", Grad1 = "#4facfe", Grad2 = "#00f2fe", IconPath = "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" },
+        new { Label = "Gần đây", Value = "5", Grad1 = "#fa709a", Grad2 = "#fee140", IconPath = "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }
+    };
+
+    // 2. DỮ LIỆU DANH MỤC
+    var categories = new[] {
+        new { Name = "Tất cả", Icon = "📝", IsActive = true },
+        new { Name = "Công việc", Icon = "💼", IsActive = false },
+        new { Name = "Lập trình", Icon = "💻", IsActive = false },
+        new { Name = "Viết lách", Icon = "✍️", IsActive = false },
+        new { Name = "Email", Icon = "📧", IsActive = false },
+        new { Name = "Sáng tạo", Icon = "🎨", IsActive = false }
+    };
+
+    // 3. DỮ LIỆU DANH SÁCH PROMPTS
+    var promptsList = new[] {
+        new { 
+            Title = "Code Review Assistant", 
+            Desc = "Phân tích code và đưa ra gợi ý cải thiện về performance, clean code và best practices", 
+            CategoryIcon = "💻", CategoryName = "Lập trình", CategoryClass = "coding", 
+            Time = "2 ngày trước", Uses = "24", IsFavorite = true 
+        },
+        new { 
+            Title = "Blog Post Generator", 
+            Desc = "Tạo bài viết blog chất lượng cao với cấu trúc rõ ràng, SEO-friendly và engaging", 
+            CategoryIcon = "✍️", CategoryName = "Viết lách", CategoryClass = "writing", 
+            Time = "5 ngày trước", Uses = "18", IsFavorite = false 
+        },
+        new { 
+            Title = "Email Marketing Pro", 
+            Desc = "Viết email marketing chuyên nghiệp với subject line hấp dẫn và CTA mạnh mẽ", 
+            CategoryIcon = "📧", CategoryName = "Email", CategoryClass = "email", 
+            Time = "1 tuần trước", Uses = "31", IsFavorite = true 
+        },
+        new { 
+            Title = "Meeting Minutes Maker", 
+            Desc = "Tạo biên bản cuộc họp chi tiết với action items và người chịu trách nhiệm", 
+            CategoryIcon = "💼", CategoryName = "Công việc", CategoryClass = "business", 
+            Time = "3 ngày trước", Uses = "15", IsFavorite = false 
+        },
+        new { 
+            Title = "Social Media Caption", 
+            Desc = "Tạo caption hấp dẫn cho mạng xã hội với hashtag và emoji phù hợp", 
+            CategoryIcon = "🎨", CategoryName = "Sáng tạo", CategoryClass = "creative", 
+            Time = "1 ngày trước", Uses = "42", IsFavorite = false 
+        },
+        new { 
+            Title = "Bug Debugger", 
+            Desc = "Phân tích lỗi code và đưa ra solution với explanation chi tiết", 
+            CategoryIcon = "💻", CategoryName = "Lập trình", CategoryClass = "coding", 
+            Time = "4 ngày trước", Uses = "27", IsFavorite = true 
+        }
+    };
+}
+
+<div class="main-content">
+    <div class="page-header">
+        <div class="header-top">
+            <h1 class="page-title">
+                <span>💬</span> Prompts
+            </h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg> Lọc
+                </button>
+                <button class="btn btn-primary" onclick="openAddPromptModal()">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg> Tạo Prompt Mới
+                </button>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" class="search-input" placeholder="Tìm kiếm prompts..." id="searchInput" />
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        @foreach (var stat in stats)
+        {
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, @stat.Grad1 0%, @stat.Grad2 100%);">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="@stat.IconPath" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">@stat.Label</div>
+                    <div class="stat-value">@stat.Value</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="categories-section">
+        <h2 class="section-title">Danh mục</h2>
+        <div class="categories-grid">
+            @foreach (var cat in categories)
+            {
+                <button class="category-chip @(cat.IsActive ? "active" : "")">
+                    <span class="chip-icon">@cat.Icon</span> @cat.Name
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="prompts-section">
+        <h2 class="section-title">Prompts của bạn</h2>
+        <div class="prompts-grid">
+            
+            @foreach (var prompt in promptsList)
+            {
+                <div class="prompt-card">
+                    <div class="prompt-header">
+                        <div class="prompt-category @prompt.CategoryClass">@prompt.CategoryIcon @prompt.CategoryName</div>
+                        <button class="btn-icon favorite @(prompt.IsFavorite ? "active" : "")">
+                            @if (prompt.IsFavorite)
+                            {
+                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                            }
+                            else
+                            {
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            }
+                        </button>
+                    </div>
+                    
+                    <h3 class="prompt-title">@prompt.Title</h3>
+                    <p class="prompt-description">@prompt.Desc</p>
+                    
+                    <div class="prompt-footer">
+                        <div class="prompt-meta">
+                            <span class="meta-item">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg> @prompt.Time
+                            </span>
+                            <span class="meta-item">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg> @prompt.Uses lần
+                            </span>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">Xem</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

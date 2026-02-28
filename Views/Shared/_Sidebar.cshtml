@@ -32,7 +32,7 @@
                 <span>Trang chủ</span>
             </a>
 
-            <a href="prompts.html" class="nav-item">
+            <a asp-controller="Notes" asp-action="Prompts" class="nav-item @(currentController == "Notes" && currentAction == "Prompts" ? "active" : "")">
                 <svg
                 class="nav-icon"
                 fill="none"

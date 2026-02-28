@@ -325,5 +325,7 @@ C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\cdik8uaqq5-{0}-5a1eo
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\8mr06vowim-{0}-1d72pa5x1s-1d72pa5x1s.gz
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\rh0438io0i-{0}-1zdo91988v-1zdo91988v.gz
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\ttgtfsn20o-{0}-t2cqv6ed1u-t2cqv6ed1u.gz
-C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-pvplc7cjhy-pvplc7cjhy.gz
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\t73q7a1vlg-{0}-knh1ms6ke5-knh1ms6ke5.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\7oixw1fph3-{0}-jbpnr2h4gg-jbpnr2h4gg.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-dwqjijz6id-dwqjijz6id.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\jyv4jfzyys-{0}-7cyhxcy6zu-7cyhxcy6zu.gz

@@ -286,5 +286,11 @@ namespace SecureNotesApp.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Prompts()
+        {
+            return View();
+        }
     }
 }
