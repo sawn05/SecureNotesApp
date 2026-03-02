@@ -1,12 +1,97 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SecureNotesApp.Data;
+using SecureNotesApp.Models;
 
 namespace SecureNotesApp.Controllers
 {
     public class AccountsController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public AccountsController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var accounts = await _context.SavedAccounts.ToListAsync();
+            
+            return View(accounts);
+        }
+
+        // Create account
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(SavedAccount account)
+        {
+            if (ModelState.IsValid)
+            {
+                account.CreatedAt = DateTime.Now;
+                
+                // Lưu vào CSDL
+                _context.SavedAccounts.Add(account);
+                await _context.SaveChangesAsync();
+                
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Update account
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, SavedAccount account)
+        {
+            if (id != account.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Tìm tài khoản cũ trong CSDL
+                    var existingAccount = await _context.SavedAccounts.FindAsync(id);
+                    if (existingAccount == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingAccount.PlatformGroup = account.PlatformGroup;
+                    existingAccount.Username = account.Username;
+                    existingAccount.Password = account.Password;
+                    existingAccount.FullName = account.FullName;
+                    existingAccount.PhoneNumber = account.PhoneNumber;
+                    existingAccount.Email = account.Email;
+
+                    _context.Update(existingAccount);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // Delete account
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var accountToDelete = await _context.SavedAccounts.FindAsync(id);
+            if (accountToDelete != null)
+            {
+                _context.SavedAccounts.Remove(accountToDelete);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
