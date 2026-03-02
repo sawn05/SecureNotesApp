@@ -126,83 +126,42 @@
       <!-- Main Content -->
       <main class="main-content">
         <div class="page-header">
-          <div class="header-top">
-            <h1 class="page-title">
-              <span>📅</span>
-              Tasks
-            </h1>
-            <div class="header-actions">
-              <button class="btn btn-secondary">
-                <svg
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                  />
-                </svg>
-                Lọc
-              </button>
-              <button
-                class="btn btn-primary"
-                onclick="SecureNotes.openAddTaskModal()"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Thêm Task
-              </button>
-            </div>
-          </div>
-
-          <div class="search-bar">
-            <svg
-              class="search-icon"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <h1 class="page-title">Tasks</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary">Lọc</button>
+            <button
+              class="btn btn-primary"
+              onclick="SecureNotes.openAddTaskModal()"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="Tìm kiếm tasks..."
-              id="searchInput"
-            />
+              + Thêm Task
+            </button>
           </div>
         </div>
 
-        <!-- Stats Overview -->
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm kiếm tasks..." />
+          <svg
+            class="search-icon"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+
+        <!-- Stats Cards -->
         <div class="stats-grid">
           <div class="stat-card">
             <div
               class="stat-icon"
-              style="
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              "
+              style="background: linear-gradient(135deg, #667eea, #764ba2)"
             >
               <svg
                 width="24"
@@ -221,16 +180,13 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Tổng task</div>
-              <div class="stat-value">52</div>
+              <div class="stat-value" id="total-tasks">0</div>
             </div>
           </div>
-
           <div class="stat-card">
             <div
               class="stat-icon"
-              style="
-                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-              "
+              style="background: linear-gradient(135deg, #10b981, #059669)"
             >
               <svg
                 width="24"
@@ -243,22 +199,19 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  d="M5 13l4 4L19 7"
                 />
               </svg>
             </div>
             <div class="stat-content">
               <div class="stat-label">Hoàn thành</div>
-              <div class="stat-value">32</div>
+              <div class="stat-value" id="completed-tasks">0</div>
             </div>
           </div>
-
           <div class="stat-card">
             <div
               class="stat-icon"
-              style="
-                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-              "
+              style="background: linear-gradient(135deg, #3b82f6, #2563eb)"
             >
               <svg
                 width="24"
@@ -277,16 +230,13 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Tỷ lệ</div>
-              <div class="stat-value">62%</div>
+              <div class="stat-value" id="completion-rate">0%</div>
             </div>
           </div>
-
           <div class="stat-card">
             <div
               class="stat-icon"
-              style="
-                background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-              "
+              style="background: linear-gradient(135deg, #f59e0b, #d97706)"
             >
               <svg
                 width="24"
@@ -299,146 +249,112 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
             </div>
             <div class="stat-content">
               <div class="stat-label">7 ngày tới</div>
-              <div class="stat-value">3</div>
+              <div class="stat-value" id="upcoming-7days">0</div>
             </div>
           </div>
         </div>
 
-        <!-- Calendar View -->
+        <!-- Calendar -->
         <div class="calendar-container">
           <div class="calendar-header">
-            <button class="btn btn-secondary btn-icon">
-              <svg
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
+            <button class="calendar-nav">&lt;</button>
             <h2 class="calendar-title">Tháng 11 2025</h2>
-            <button class="btn btn-secondary btn-icon">
-              <svg
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
+            <button class="calendar-nav">&gt;</button>
           </div>
 
           <div class="calendar-grid">
-            <!-- Weekday Headers -->
-            <div class="calendar-weekday">Thứ 2</div>
-            <div class="calendar-weekday">Thứ 3</div>
-            <div class="calendar-weekday">Thứ 4</div>
-            <div class="calendar-weekday">Thứ 5</div>
-            <div class="calendar-weekday">Thứ 6</div>
-            <div class="calendar-weekday">Thứ 7</div>
-            <div class="calendar-weekday">Chủ nhật</div>
+            <div class="calendar-weekday">CN</div>
+            <div class="calendar-weekday">T2</div>
+            <div class="calendar-weekday">T3</div>
+            <div class="calendar-weekday">T4</div>
+            <div class="calendar-weekday">T5</div>
+            <div class="calendar-weekday">T6</div>
+            <div class="calendar-weekday">T7</div>
 
-            <!-- Calendar Days -->
-            <!-- Week 1 -->
-            <div class="calendar-day past" data-date="2025-10-27">
+            <!-- Ngày mẫu - JS sẽ cập nhật động -->
+            <div class="calendar-day"></div>
+            <div class="calendar-day" data-date="2025-10-27">
               <div class="day-number">27/10</div>
             </div>
-            <div class="calendar-day past" data-date="2025-10-28">
+            <div class="calendar-day" data-date="2025-10-28">
               <div class="day-number">28/10</div>
             </div>
-            <div class="calendar-day past" data-date="2025-10-29">
+            <div class="calendar-day" data-date="2025-10-29">
               <div class="day-number">29/10</div>
             </div>
-            <div class="calendar-day past" data-date="2025-10-30">
+            <div class="calendar-day" data-date="2025-10-30">
               <div class="day-number">30/10</div>
             </div>
-            <div class="calendar-day past" data-date="2025-10-31">
+            <div class="calendar-day" data-date="2025-10-31">
               <div class="day-number">31/10</div>
             </div>
             <div class="calendar-day has-tasks" data-date="2025-11-01">
               <div class="day-number">01/11</div>
-              <div class="day-label">1/2</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Họp team buổi sáng</span>
-              </div>
-              <div class="task-preview">
-                <div class="task-dot"></div>
-                <span>Viết báo cáo tuần</span>
-              </div>
+              <div class="day-label"></div>
+              <div class="task-preview-container"></div>
             </div>
             <div class="calendar-day has-tasks" data-date="2025-11-02">
               <div class="day-number">02/11</div>
               <div class="day-label">1/4</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Gửi email khách hàng</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot completed"></div>
+                  <span>Gửi email khách hàng</span>
+                </div>
               </div>
             </div>
-
-            <!-- Week 2 -->
             <div class="calendar-day has-tasks" data-date="2025-11-03">
               <div class="day-number">03/11</div>
               <div class="day-label">2/2</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Kiểm tra inventory</span>
-              </div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Book khách sạn</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot"></div>
+                  <span>Kiểm tra inventory</span>
+                </div>
+                <div class="task-preview">
+                  <div class="task-dot"></div>
+                  <span>Book khách sạn</span>
+                </div>
               </div>
             </div>
             <div class="calendar-day has-tasks" data-date="2025-11-04">
               <div class="day-number">04/11</div>
               <div class="day-label">2/3</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Đặt vé máy bay</span>
-              </div>
-              <div class="task-preview">
-                <div class="task-dot"></div>
-                <span>Review code</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot completed"></div>
+                  <span>Đặt vé máy bay</span>
+                </div>
+                <div class="task-preview">
+                  <div class="task-dot"></div>
+                  <span>Review code</span>
+                </div>
               </div>
             </div>
             <div class="calendar-day has-tasks" data-date="2025-11-05">
               <div class="day-number">05/11</div>
               <div class="day-label">1/3</div>
-              <div class="task-preview">
-                <div class="task-dot"></div>
-                <span>Meeting với khách hàng</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot"></div>
+                  <span>Meeting với khách hàng</span>
+                </div>
               </div>
             </div>
             <div class="calendar-day has-tasks active" data-date="2025-11-06">
               <div class="day-number">06/11</div>
               <div class="day-label">1/2</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Thanh toán hóa đơn</span>
-              </div>
-              <div class="task-preview">
-                <div class="task-dot"></div>
-                <span>Update website</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot completed"></div>
+                  <span>Thanh toán hóa đơn</span>
+                </div>
               </div>
             </div>
             <div class="calendar-day" data-date="2025-11-07">
@@ -447,17 +363,17 @@
             <div class="calendar-day has-tasks" data-date="2025-11-08">
               <div class="day-number">08/11</div>
               <div class="day-label">2/3</div>
-              <div class="task-preview">
-                <div class="task-dot completed"></div>
-                <span>Kiểm tra cao tài...</span>
+              <div class="task-preview-container">
+                <div class="task-preview">
+                  <div class="task-dot completed"></div>
+                  <span>Kiểm tra cao tài...</span>
+                </div>
               </div>
             </div>
-            <div class="calendar-day has-tasks" data-date="2025-11-09">
+            <div class="calendar-day" data-date="2025-11-09">
               <div class="day-number">09/11</div>
-              <div class="day-label">0/1</div>
             </div>
-
-            <!-- Continue for remaining days... -->
+            <!-- Thêm các ngày còn lại nếu cần -->
             <div class="calendar-day" data-date="2025-11-10">
               <div class="day-number">10/11</div>
             </div>
@@ -482,21 +398,23 @@
           </div>
         </div>
 
-        <!-- Task Detail Modal (Hidden by default) -->
+        <!-- Modal chi tiết task (sẽ được JS fill nội dung) -->
         <div id="taskModal" class="modal" style="display: none">
           <div class="modal-content">
             <div class="modal-header">
               <h3>Chi tiết Task</h3>
-              <button class="modal-close">&times;</button>
+              <button class="modal-close">×</button>
             </div>
             <div class="modal-body">
-              <!-- Task details will be loaded here -->
+              <!-- JS sẽ chèn danh sách task vào đây -->
             </div>
           </div>
         </div>
+
+        <!-- Modal thêm task mới (JS sẽ dùng openModal để tạo động) -->
       </main>
     </div>
 
-    <script src="~/js/site.js"></script>
+    <script src="js/site2.js"></script>
   </body>
 </html>

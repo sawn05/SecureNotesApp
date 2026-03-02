@@ -41,6 +41,13 @@
               </svg>
               <span>Trang chủ</span>
             </a>
+            <a href="prompts.html" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        <span>Prompts</span>
+                    </a>
+            </a>
             <a href="notes.html" class="nav-item">
               <svg
                 class="nav-icon"
@@ -163,7 +170,7 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Tổng tài khoản</div>
-              <div class="stat-value">12</div>
+              <div class="stat-value" id="stat-accounts">12</div>
             </div>
           </div>
 
@@ -191,7 +198,7 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Tasks hôm nay</div>
-              <div class="stat-value">8</div>
+              <div class="stat-value" id="stat-tasks">8</div>
             </div>
           </div>
 
@@ -219,7 +226,7 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Ghi chú</div>
-              <div class="stat-value">24</div>
+              <div class="stat-value" id="stat-notes">24</div>
             </div>
           </div>
 
@@ -247,7 +254,7 @@
             </div>
             <div class="stat-content">
               <div class="stat-label">Hoàn thành</div>
-              <div class="stat-value">75%</div>
+              <div class="stat-value" id="stat-completion">75%</div>
             </div>
           </div>
         </div>
@@ -267,7 +274,7 @@
               <h2 class="card-title">Hoạt động gần đây</h2>
             </div>
 
-            <div class="activity-list">
+            <div class="activity-list" id="activity-list">
               <div class="activity-item">
                 <div
                   class="activity-icon"
@@ -462,6 +469,6 @@
       </main>
     </div>
 
-    <script src="js/site.js"></script>
+    <script src="js/site2.js"></script>
   </body>
 </html>
