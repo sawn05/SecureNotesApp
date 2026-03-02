@@ -2,4 +2,6 @@ bin/
 obj/
 .vscode/
 *.user
+*.suo
+node_modules/
 appsettings.Development.json
