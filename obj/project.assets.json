@@ -3676,23 +3676,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sángg\\.nuget\\packages\\": {},
+    "C:\\Users\\Windows\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sángg\\SecureNotesApp\\SecureNotesApp.csproj",
+      "projectUniqueName": "C:\\Users\\Windows\\source\\repos\\SecureNotesApp\\SecureNotesApp\\SecureNotesApp.csproj",
       "projectName": "SecureNotesApp",
-      "projectPath": "C:\\Users\\Sángg\\SecureNotesApp\\SecureNotesApp.csproj",
-      "packagesPath": "C:\\Users\\Sángg\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sángg\\SecureNotesApp\\obj\\",
+      "projectPath": "C:\\Users\\Windows\\source\\repos\\SecureNotesApp\\SecureNotesApp\\SecureNotesApp.csproj",
+      "packagesPath": "C:\\Users\\Windows\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Windows\\source\\repos\\SecureNotesApp\\SecureNotesApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Sángg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Windows\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
