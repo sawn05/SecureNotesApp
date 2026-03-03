@@ -38,5 +38,31 @@ namespace SecureNotesApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleFavorite(int id)
+        {
+            var prompt = await _context.Prompts.FindAsync(id);
+            if (prompt != null)
+            {
+                prompt.IsFavorite = !prompt.IsFavorite;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IncrementUseCount(int id)
+        {
+            var prompt = await _context.Prompts.FindAsync(id);
+            if (prompt != null)
+            {
+                prompt.UseCount += 1;
+                await _context.SaveChangesAsync();
+                
+                return Json(new { success = true, newCount = prompt.UseCount });
+            }
+            return Json(new { success = false });
+        }
     }
 }
