@@ -1,16 +1,22 @@
+@model IEnumerable<SecureNotesApp.Models.Prompt>
+
 @{
     ViewData["Title"] = "Quản lý Prompts";
-    // Layout = "_Layout"; // Bỏ comment nếu dùng layout chung
 
-    // 1. DỮ LIỆU THỐNG KÊ
+    // 1. TÍNH TOÁN DỮ LIỆU THỐNG KÊ TỪ DATABASE THẬT
+    var totalPrompts = Model?.Count() ?? 0;
+    var favoritePrompts = Model?.Count(p => p.IsFavorite) ?? 0;
+    var categoryCount = Model?.Select(p => p.CategoryName).Distinct().Count() ?? 0;
+    var recentPrompts = Model?.Count(p => p.CreatedAt >= DateTime.Now.AddDays(-7)) ?? 0;
+
     var stats = new[] {
-        new { Label = "Tổng Prompts", Value = "28", Grad1 = "#667eea", Grad2 = "#764ba2", IconPath = "M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" },
-        new { Label = "Yêu thích", Value = "12", Grad1 = "#f093fb", Grad2 = "#f5576c", IconPath = "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" },
-        new { Label = "Danh mục", Value = "6", Grad1 = "#4facfe", Grad2 = "#00f2fe", IconPath = "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" },
-        new { Label = "Gần đây", Value = "5", Grad1 = "#fa709a", Grad2 = "#fee140", IconPath = "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }
+        new { Label = "Tổng Prompts", Value = totalPrompts.ToString(), Grad1 = "#667eea", Grad2 = "#764ba2", IconPath = "M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" },
+        new { Label = "Yêu thích", Value = favoritePrompts.ToString(), Grad1 = "#f093fb", Grad2 = "#f5576c", IconPath = "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" },
+        new { Label = "Danh mục", Value = categoryCount.ToString(), Grad1 = "#4facfe", Grad2 = "#00f2fe", IconPath = "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" },
+        new { Label = "Gần đây", Value = recentPrompts.ToString(), Grad1 = "#fa709a", Grad2 = "#fee140", IconPath = "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }
     };
 
-    // 2. DỮ LIỆU DANH MỤC
+    // 2. DỮ LIỆU DANH MỤC (Giữ nguyên để làm nút Lọc)
     var categories = new[] {
         new { Name = "Tất cả", Icon = "📝", IsActive = true },
         new { Name = "Công việc", Icon = "💼", IsActive = false },
@@ -20,45 +26,16 @@
         new { Name = "Sáng tạo", Icon = "🎨", IsActive = false }
     };
 
-    // 3. DỮ LIỆU DANH SÁCH PROMPTS
-    var promptsList = new[] {
-        new { 
-            Title = "Code Review Assistant", 
-            Desc = "Phân tích code và đưa ra gợi ý cải thiện về performance, clean code và best practices", 
-            CategoryIcon = "💻", CategoryName = "Lập trình", CategoryClass = "coding", 
-            Time = "2 ngày trước", Uses = "24", IsFavorite = true 
-        },
-        new { 
-            Title = "Blog Post Generator", 
-            Desc = "Tạo bài viết blog chất lượng cao với cấu trúc rõ ràng, SEO-friendly và engaging", 
-            CategoryIcon = "✍️", CategoryName = "Viết lách", CategoryClass = "writing", 
-            Time = "5 ngày trước", Uses = "18", IsFavorite = false 
-        },
-        new { 
-            Title = "Email Marketing Pro", 
-            Desc = "Viết email marketing chuyên nghiệp với subject line hấp dẫn và CTA mạnh mẽ", 
-            CategoryIcon = "📧", CategoryName = "Email", CategoryClass = "email", 
-            Time = "1 tuần trước", Uses = "31", IsFavorite = true 
-        },
-        new { 
-            Title = "Meeting Minutes Maker", 
-            Desc = "Tạo biên bản cuộc họp chi tiết với action items và người chịu trách nhiệm", 
-            CategoryIcon = "💼", CategoryName = "Công việc", CategoryClass = "business", 
-            Time = "3 ngày trước", Uses = "15", IsFavorite = false 
-        },
-        new { 
-            Title = "Social Media Caption", 
-            Desc = "Tạo caption hấp dẫn cho mạng xã hội với hashtag và emoji phù hợp", 
-            CategoryIcon = "🎨", CategoryName = "Sáng tạo", CategoryClass = "creative", 
-            Time = "1 ngày trước", Uses = "42", IsFavorite = false 
-        },
-        new { 
-            Title = "Bug Debugger", 
-            Desc = "Phân tích lỗi code và đưa ra solution với explanation chi tiết", 
-            CategoryIcon = "💻", CategoryName = "Lập trình", CategoryClass = "coding", 
-            Time = "4 ngày trước", Uses = "27", IsFavorite = true 
-        }
-    };
+    // Hàm phụ: Tính thời gian "vừa xong", "2 ngày trước"...
+    string GetTimeAgo(DateTime date)
+    {
+        var span = DateTime.Now - date;
+        if (span.Days > 30) return date.ToString("dd/MM/yyyy");
+        if (span.Days > 0) return $"{span.Days} ngày trước";
+        if (span.Hours > 0) return $"{span.Hours} giờ trước";
+        if (span.Minutes > 0) return $"{span.Minutes} phút trước";
+        return "Vừa xong";
+    }
 }
 
 <div class="main-content">
@@ -68,11 +45,11 @@
                 <span>💬</span> Prompts
             </h1>
             <div class="header-actions">
-                <button class="btn btn-secondary">
+                <!-- <button class="btn btn-secondary">
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                     </svg> Lọc
-                </button>
+                </button> -->
                 <button class="btn btn-primary" onclick="openAddPromptModal()">
                     <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -118,53 +95,137 @@
         </div>
     </div>
 
-    <div class="prompts-section">
+    <div class="prompts-section mt-4">
         <h2 class="section-title">Prompts của bạn</h2>
-        <div class="prompts-grid">
-            
-            @foreach (var prompt in promptsList)
-            {
-                <div class="prompt-card">
-                    <div class="prompt-header">
-                        <div class="prompt-category @prompt.CategoryClass">@prompt.CategoryIcon @prompt.CategoryName</div>
-                        <button class="btn-icon favorite @(prompt.IsFavorite ? "active" : "")">
-                            @if (prompt.IsFavorite)
-                            {
-                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                </svg>
-                            }
-                            else
-                            {
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                            }
-                        </button>
-                    </div>
-                    
-                    <h3 class="prompt-title">@prompt.Title</h3>
-                    <p class="prompt-description">@prompt.Desc</p>
-                    
-                    <div class="prompt-footer">
-                        <div class="prompt-meta">
-                            <span class="meta-item">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg> @prompt.Time
-                            </span>
-                            <span class="meta-item">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg> @prompt.Uses lần
-                            </span>
+        
+        @if (Model != null && Model.Any())
+        {
+            <div class="prompts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                @foreach (var prompt in Model)
+                {
+                    <div class="prompt-card" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100%;">
+                        
+                        <div class="prompt-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div class="prompt-category @prompt.CategoryClass" style="font-size: 0.85rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #f1f5f9; color: #475569;">
+                                @prompt.CategoryIcon @prompt.CategoryName
+                            </div>
+                            
+                            <button class="btn-icon favorite @(prompt.IsFavorite ? "active" : "")" style="background: none; border: none; cursor: pointer; color: @(prompt.IsFavorite ? "#ef4444" : "#cbd5e1"); transition: 0.2s;">
+                                @if (prompt.IsFavorite)
+                                {
+                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+                                }
+                                else
+                                {
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                                }
+                            </button>
                         </div>
-                        <button class="btn btn-sm btn-secondary">Xem</button>
+                        
+                        <h3 class="prompt-title" style="margin: 0 0 8px 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">@prompt.Title</h3>
+                        <p class="prompt-description" style="margin: 0 0 16px 0; font-size: 0.9rem; color: #64748b; line-height: 1.5; flex-grow: 1;">@prompt.Description</p>
+                        
+                        <div class="prompt-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: auto;">
+                            <div class="prompt-meta" style="display: flex; gap: 12px; color: #94a3b8; font-size: 0.85rem;">
+                                <span class="meta-item" style="display: flex; align-items: center; gap: 4px;">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> 
+                                    @GetTimeAgo(prompt.CreatedAt)
+                                </span>
+                                <span class="meta-item" style="display: flex; align-items: center; gap: 4px;">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> 
+                                    @prompt.UseCount lần
+                                </span>
+                            </div>
+                            <button class="btn btn-sm btn-secondary" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='#f1f5f9'">Xem</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 50px; background: white; border-radius: 12px; border: 1px dashed #cbd5e1; color: #94a3b8;">
+                <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom: 16px; opacity: 0.5;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+                <br />
+                Chưa có Prompt nào được lưu. Hãy tạo Prompt đầu tiên của bạn!
+            </div>
+        }
+    </div>
+</div>
+
+<div id="addPromptModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 1.25rem;">Tạo Prompt Mới 💬</h3>
+            <button type="button" onclick="closeAddPromptModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <form asp-controller="Prompts" asp-action="Create" method="post">
+                
+                <div class="row">
+                    <div class="col-md-7 mb-3">
+                        <label class="form-label fw-bold">Tiêu đề <span class="text-danger">*</span></label>
+                        <input type="text" name="Title" class="form-control" placeholder="VD: Viết email xin nghỉ phép..." required maxlength="150" />
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">Danh mục <span class="text-danger">*</span></label>
+                        
+                        <select id="categorySelect" name="CategoryName" class="form-select form-control" required onchange="updateCategoryData()">
+                            <option value="" disabled selected>-- Chọn --</option>
+                            <option value="Công việc" data-icon="💼" data-class="business">💼 Công việc</option>
+                            <option value="Lập trình" data-icon="💻" data-class="coding">💻 Lập trình</option>
+                            <option value="Viết lách" data-icon="✍️" data-class="writing">✍️ Viết lách</option>
+                            <option value="Email" data-icon="📧" data-class="email">📧 Email</option>
+                            <option value="Sáng tạo" data-icon="🎨" data-class="creative">🎨 Sáng tạo</option>
+                            <option value="Khác" data-icon="📝" data-class="other">📝 Khác</option>
+                        </select>
+
+                        <input type="hidden" name="CategoryIcon" id="hiddenCategoryIcon" />
+                        <input type="hidden" name="CategoryClass" id="hiddenCategoryClass" />
                     </div>
                 </div>
-            }
-
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mô tả ngắn</label>
+                    <input type="text" name="Description" class="form-control" placeholder="Mô tả công dụng của prompt này (không bắt buộc)..." maxlength="500" />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nội dung Prompt (Câu lệnh) <span class="text-danger">*</span></label>
+                    <textarea name="Content" class="form-control" rows="5" placeholder="Nhập câu lệnh chi tiết dành cho AI vào đây. VD: Đóng vai một chuyên gia nhân sự, hãy viết..." required style="resize: vertical;"></textarea>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <button type="button" class="btn btn-light me-2 border" onclick="closeAddPromptModal()">Hủy</button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">Lưu Prompt</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Đóng mở Popup
+        function openAddPromptModal() { document.getElementById('addPromptModal').style.display = 'flex'; }
+        function closeAddPromptModal() { document.getElementById('addPromptModal').style.display = 'none'; }
+        
+        // Bấm ra ngoài vùng xám để đóng
+        window.onclick = function(event) {
+            var modal = document.getElementById('addPromptModal');
+            if (event.target == modal) modal.style.display = 'none';
+        }
+
+        // Tự động trích xuất Icon và Class khi người dùng chọn Danh mục
+        function updateCategoryData() {
+            var select = document.getElementById("categorySelect");
+            var selectedOption = select.options[select.selectedIndex];
+            
+            // Lấy data từ thẻ <option> và nhét vào thẻ <input type="hidden"> để gửi về Server
+            document.getElementById("hiddenCategoryIcon").value = selectedOption.getAttribute("data-icon");
+            document.getElementById("hiddenCategoryClass").value = selectedOption.getAttribute("data-class");
+        }
+    </script>
+}
