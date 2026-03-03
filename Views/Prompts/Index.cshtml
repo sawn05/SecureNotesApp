@@ -88,7 +88,7 @@
         <div class="categories-grid">
             @foreach (var cat in categories)
             {
-                <button class="category-chip @(cat.IsActive ? "active" : "")">
+                <button class="category-chip @(cat.IsActive ? "active" : "")" onclick="filterByCategory('@cat.Name', this)">
                     <span class="chip-icon">@cat.Icon</span> @cat.Name
                 </button>
             }
@@ -103,7 +103,7 @@
             <div class="prompts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
                 @foreach (var prompt in Model)
                 {
-                    <div class="prompt-card" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100%;">
+                    <div class="prompt-card" data-category="@prompt.CategoryName" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100%;">
                         
                         <div class="prompt-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <div class="prompt-category @prompt.CategoryClass" style="font-size: 0.85rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #f1f5f9; color: #475569;">
@@ -455,5 +455,61 @@
             if (event.target == viewModal) viewModal.style.display = 'none';
             if (event.target == editModal) editModal.style.display = 'none';
         }
+
+        // Filter
+        function filterByCategory(categoryName, btnElement) {
+            var chips = document.querySelectorAll('.category-chip');
+            chips.forEach(function(chip) { chip.classList.remove('active'); });
+            btnElement.classList.add('active');
+
+            var cards = document.querySelectorAll('.prompt-card');
+            cards.forEach(function(card) {
+                var cardCategory = card.getAttribute('data-category');
+                if (categoryName === 'Tất cả' || cardCategory === categoryName) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+
+        // Search
+        document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const promptCards = document.querySelectorAll('.prompt-card');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+
+                promptCards.forEach(card => {
+                    // Lấy text từ tiêu đề và mô tả
+                    const title = card.querySelector('.prompt-title').textContent.toLowerCase();
+                    const description = card.querySelector('.prompt-description').textContent.toLowerCase();
+                    const category = card.getAttribute('data-category').toLowerCase();
+
+                    // Kiểm tra nếu từ khóa xuất hiện trong tiêu đề, mô tả hoặc danh mục
+                    if (title.includes(searchTerm) || 
+                        description.includes(searchTerm) || 
+                        category.includes(searchTerm)) {
+                        
+                        card.style.display = "flex"; // Hiện lại card
+                        card.style.animation = "fadeIn 0.3s ease"; 
+                    } else {
+                        card.style.display = "none"; // Ẩn card
+                    }
+                });
+
+                // Tùy chọn: Xử lý khi không tìm thấy kết quả nào
+                handleEmptyResult();
+            });
+        }
+    });
+
+    function handleEmptyResult() {
+        const visibleCards = document.querySelectorAll('.prompt-card[style*="display: flex"]');
+        // Bạn có thể thêm logic hiển thị thông báo "Không tìm thấy" ở đây nếu cần
+    }
     </script>
 }
