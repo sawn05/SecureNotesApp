@@ -110,27 +110,44 @@
                                 @prompt.CategoryIcon @prompt.CategoryName
                             </div>
                             
-                            <form asp-controller="Prompts" asp-action="ToggleFavorite" asp-route-id="@prompt.Id" method="post" style="margin: 0;">
-                                <button type="submit" class="btn-icon favorite @(prompt.IsFavorite ? "active" : "")" 
-                                        style="background: none; border: none; cursor: pointer; color: @(prompt.IsFavorite ? "#ef4444" : "#cbd5e1"); transition: 0.2s;" 
-                                        title="@(prompt.IsFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích")"
-                                        onmouseover="this.style.transform='scale(1.2)'" 
-                                        onmouseout="this.style.transform='scale(1)'">
-                                    
-                                    @if (prompt.IsFavorite)
-                                    {
-                                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                        </svg>
-                                    }
-                                    else
-                                    {
+                            
+
+                            <div style="display: flex; transition: 0.2s;">
+                                <form asp-controller="Prompts" asp-action="ToggleFavorite" asp-route-id="@prompt.Id" method="post" style="margin: 0;">
+                                    <button type="submit" class="btn-icon favorite @(prompt.IsFavorite ? "active" : "")" 
+                                            style="background: none; border: none; cursor: pointer; color: @(prompt.IsFavorite ? "#ef4444" : "#cbd5e1"); transition: 0.2s;" 
+                                            title="@(prompt.IsFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích")"
+                                            onmouseover="this.style.transform='scale(1.2)'" 
+                                            onmouseout="this.style.transform='scale(1)'">
+                                        
+                                        @if (prompt.IsFavorite)
+                                        {
+                                            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                            </svg>
+                                        }
+                                        else
+                                        {
+                                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        }
+                                    </button>
+                                </form>
+
+
+                                <form asp-controller="Prompts" asp-action="Delete" asp-route-id="@prompt.Id" method="post" style="margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn Prompt này không? 🗑️');">
+                                    <button type="submit" class="btn btn-sm" 
+                                            style="background: none; border: none; padding: 6px 10px; border-radius: 6px; color: #ef4444; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;" 
+                                            onmouseover="this.style.color='#b91c1c'" 
+                                            onmouseout="this.style.color='#ef4444'"
+                                            title="Xóa Prompt">
                                         <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
-                                    }
-                                </button>
-                            </form>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                         
                         <h3 class="prompt-title" style="margin: 0 0 8px 0; font-size: 1.15rem; font-weight: 700; color: #1e293b;">@prompt.Title</h3>
@@ -147,16 +164,45 @@
                                     <span id="useCount-@prompt.Id">@prompt.UseCount</span> lần xem
                                 </span>
                             </div>
-                            <button class="btn btn-sm btn-secondary" 
-                                style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;" 
-                                onmouseover="this.style.background='#f1f5f9'"
-                                data-id="@prompt.Id"
-                                data-title="@prompt.Title"
-                                data-desc="@prompt.Description"
-                                data-content="@prompt.Content"
-                                onclick="openViewPromptModal(this)">
-                            Xem
-                        </button>
+
+
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-sm" 
+                                        style="background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; color: #64748b; font-weight: 600; cursor: pointer; transition: 0.2s;" 
+                                        onmouseover="this.style.borderColor='#94a3b8'; this.style.color='#1e293b'" 
+                                        onmouseout="this.style.borderColor='#cbd5e1'; this.style.color='#64748b'"
+                                        data-id="@prompt.Id"
+                                        data-title="@prompt.Title"
+                                        data-category="@prompt.CategoryName"
+                                        data-desc="@prompt.Description"
+                                        data-content="@prompt.Content"
+                                        onclick="openEditPromptModal(this)">
+                                    Sửa
+                                </button>
+                                
+                                <button class="btn btn-sm" 
+                                        style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s;" 
+                                        onmouseover="this.style.background='#f1f5f9'"
+                                        data-id="@prompt.Id"
+                                        data-title="@prompt.Title"
+                                        data-desc="@prompt.Description"
+                                        data-content="@prompt.Content"
+                                        onclick="openViewPromptModal(this)">
+                                    Xem
+                                </button>
+
+                                <!-- <form asp-controller="Prompts" asp-action="Delete" asp-route-id="@prompt.Id" method="post" style="margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn Prompt này không? 🗑️');">
+                                    <button type="submit" class="btn btn-sm" 
+                                            style="background: #fee2e2; border: 1px solid #fca5a5; padding: 6px 10px; border-radius: 6px; color: #ef4444; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;" 
+                                            onmouseover="this.style.background='#fecaca'" 
+                                            onmouseout="this.style.background='#fee2e2'"
+                                            title="Xóa Prompt">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form> -->
+                            </div>
                         </div>
                     </div>
                 }
@@ -173,6 +219,7 @@
     </div>
 </div>
 
+<!-- Model thêm -->
 <div id="addPromptModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
         
@@ -227,6 +274,7 @@
 </div>
 
 
+<!-- Model xem  -->
 <div id="viewPromptModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 600px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
         
@@ -258,6 +306,61 @@
     </div>
 </div>
 
+
+<!-- Model sửa -->
+<div id="editPromptModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div class="modal-content" style="background: white; padding: 24px; border-radius: 12px; width: 100%; max-width: 650px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 1.25rem;">Chỉnh sửa Prompt ✏️</h3>
+            <button type="button" onclick="closeEditPromptModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <form asp-controller="Prompts" asp-action="Edit" method="post">
+                <input type="hidden" name="Id" id="editPromptId" />
+                
+                <div class="row">
+                    <div class="col-md-7 mb-3">
+                        <label class="form-label fw-bold">Tiêu đề <span class="text-danger">*</span></label>
+                        <input type="text" name="Title" id="editPromptTitle" class="form-control" required maxlength="150" />
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">Danh mục <span class="text-danger">*</span></label>
+                        <select id="editCategorySelect" name="CategoryName" class="form-select form-control" required onchange="updateEditCategoryData()">
+                            <option value="Công việc" data-icon="💼" data-class="business">💼 Công việc</option>
+                            <option value="Lập trình" data-icon="💻" data-class="coding">💻 Lập trình</option>
+                            <option value="Viết lách" data-icon="✍️" data-class="writing">✍️ Viết lách</option>
+                            <option value="Email" data-icon="📧" data-class="email">📧 Email</option>
+                            <option value="Sáng tạo" data-icon="🎨" data-class="creative">🎨 Sáng tạo</option>
+                            <option value="Khác" data-icon="📝" data-class="other">📝 Khác</option>
+                        </select>
+                        <input type="hidden" name="CategoryIcon" id="editHiddenCategoryIcon" />
+                        <input type="hidden" name="CategoryClass" id="editHiddenCategoryClass" />
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Mô tả ngắn</label>
+                    <input type="text" name="Description" id="editPromptDesc" class="form-control" maxlength="500" />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nội dung Prompt <span class="text-danger">*</span></label>
+                    <textarea name="Content" id="editPromptContent" class="form-control" rows="5" required style="resize: vertical;"></textarea>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <button type="button" class="btn btn-light me-2 border" onclick="closeEditPromptModal()">Hủy</button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
     <script>
         // Đóng mở Popup
@@ -266,12 +369,10 @@
         function closeViewPromptModal() {
             document.getElementById('viewPromptModal').style.display = 'none';
         }
-        
-        // Bấm ra ngoài vùng xám để đóng
-        window.onclick = function(event) {
-            var modal = document.getElementById('addPromptModal');
-            if (event.target == modal) modal.style.display = 'none';
+        function closeEditPromptModal() {
+            document.getElementById('editPromptModal').style.display = 'none';
         }
+        
 
         // Tự động trích xuất Icon và Class khi người dùng chọn Danh mục
         function updateCategoryData() {
@@ -307,16 +408,6 @@
             });
         }
 
-        
-
-        // Cập nhật sự kiện click ra ngoài để đóng cả 2 Modal
-        window.onclick = function(event) {
-            var addModal = document.getElementById('addPromptModal');
-            var viewModal = document.getElementById('viewPromptModal');
-            if (event.target == addModal) addModal.style.display = 'none';
-            if (event.target == viewModal) viewModal.style.display = 'none';
-        }
-
         // Chức năng Copy vào Clipboard
         function copyAndUsePrompt() {
             var copyText = document.getElementById("viewPromptContent");
@@ -326,6 +417,43 @@
             }).catch(function(err) {
                 alert("Lỗi khi copy: " + err);
             });
+        }
+
+
+
+        // Mở Modal Sửa và tự động đổ dữ liệu cũ vào form
+        function openEditPromptModal(btn) {
+            document.getElementById('editPromptId').value = btn.getAttribute('data-id');
+            document.getElementById('editPromptTitle').value = btn.getAttribute('data-title');
+            document.getElementById('editCategorySelect').value = btn.getAttribute('data-category');
+            document.getElementById('editPromptDesc').value = btn.getAttribute('data-desc');
+            document.getElementById('editPromptContent').value = btn.getAttribute('data-content');
+
+            // Tự động kích hoạt việc lấy Icon và Class tương ứng với danh mục vừa được set
+            updateEditCategoryData();
+
+            document.getElementById('editPromptModal').style.display = 'flex';
+        }
+
+        
+
+        // Hàm trích xuất Icon và Class cho form Sửa
+        function updateEditCategoryData() {
+            var select = document.getElementById("editCategorySelect");
+            var selectedOption = select.options[select.selectedIndex];
+            
+            document.getElementById("editHiddenCategoryIcon").value = selectedOption.getAttribute("data-icon");
+            document.getElementById("editHiddenCategoryClass").value = selectedOption.getAttribute("data-class");
+        }
+
+        window.onclick = function(event) {
+            var addModal = document.getElementById('addPromptModal');
+            var viewModal = document.getElementById('viewPromptModal');
+            var editModal = document.getElementById('editPromptModal'); 
+            
+            if (event.target == addModal) addModal.style.display = 'none';
+            if (event.target == viewModal) viewModal.style.display = 'none';
+            if (event.target == editModal) editModal.style.display = 'none';
         }
     </script>
 }
