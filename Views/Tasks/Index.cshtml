@@ -261,25 +261,19 @@
         window.onclick = function(event) { if (event.target == document.getElementById('addTaskModal')) closeAddTaskModal(); }
 
 
-        // ==========================================
-        // CHỨC NĂNG TÌM KIẾM TRỰC TIẾP (LIVE SEARCH)
-        // ==========================================
+        // Quick Search Task
         document.getElementById('taskSearchInput').addEventListener('input', function (e) {
-            // Lấy từ khóa người dùng gõ và chuyển thành chữ thường
             var searchTerm = e.target.value.toLowerCase(); 
             
-            // Lấy toàn bộ các khối công việc (cả chưa xong và đã xong)
             var taskItems = document.querySelectorAll('.task-item');
 
             taskItems.forEach(function (item) {
-                // Lấy toàn bộ chữ bên trong khối đó (Tiêu đề, mô tả, ngày tháng)
                 var text = item.textContent.toLowerCase();
 
-                // Nếu nội dung chứa từ khóa tìm kiếm thì hiện, không thì ẩn
                 if (text.includes(searchTerm)) {
-                    item.style.display = ''; // Trả về trạng thái flex mặc định
+                    item.style.display = '';
                 } else {
-                    item.style.display = 'none'; // Ẩn đi hoàn toàn
+                    item.style.display = 'none';
                 }
             });
         });
