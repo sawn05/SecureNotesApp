@@ -27,5 +27,8 @@ namespace SecureNotesApp.Models
         public int UseCount { get; set; } = 0;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        
+        public bool IsPublic { get; set; } = false;
+        public string? OwnerId { get; set; }
     }
 }

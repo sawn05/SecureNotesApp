@@ -16,10 +16,25 @@ namespace SecureNotesApp.Controllers
             _context = context;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var prompts = await _context.Prompts.ToListAsync();
-            return View(prompts);
+            var currentUser = User.Identity?.Name;
+
+            var myPrompts = await _context.Prompts
+                .Where(p => p.OwnerId == currentUser)
+                // .OrderByDescending(p => p.IsFavorite)
+                .ToListAsync();
+
+            var communityPrompts = await _context.Prompts
+                .Where(p => p.IsPublic && p.OwnerId != currentUser)
+                .OrderByDescending(p => p.UseCount)
+                .ToListAsync();
+
+            ViewBag.MyPrompts = myPrompts;
+            ViewBag.CommunityPrompts = communityPrompts;
+
+            return View();
         }
 
 
@@ -32,6 +47,7 @@ namespace SecureNotesApp.Controllers
                 prompt.CreatedAt = DateTime.Now;
                 prompt.UseCount = 0;
                 prompt.IsFavorite = false;
+                prompt.OwnerId = User.Identity?.Name;
                 
                 _context.Prompts.Add(prompt);
                 await _context.SaveChangesAsync();
@@ -86,6 +102,7 @@ namespace SecureNotesApp.Controllers
                     existingPrompt.CategoryClass = prompt.CategoryClass;
                     existingPrompt.Description = prompt.Description;
                     existingPrompt.Content = prompt.Content;
+                    existingPrompt.IsPublic = prompt.IsPublic;
                     
                     await _context.SaveChangesAsync();
                 }
