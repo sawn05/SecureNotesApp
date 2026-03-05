@@ -14,5 +14,6 @@ namespace SecureNotesApp.Data
         public DbSet<SavedAccount> SavedAccounts { get; set; }
         public DbSet<TodoTask> TodoTasks { get; set; }
         public DbSet<Prompt> Prompts { get; set; }
+        public DbSet<Note> Notes { get; set; }
     }
 }
