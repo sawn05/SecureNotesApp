@@ -26,5 +26,7 @@ namespace SecureNotesApp.Models
         public string Email { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public string? OwnerID { get; set; }
     }
 }
