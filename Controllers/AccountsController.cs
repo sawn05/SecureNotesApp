@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SecureNotesApp.Data;
 using SecureNotesApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SecureNotesApp.Controllers
 {
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly ApplicationDbContext _context;

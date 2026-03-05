@@ -21,5 +21,6 @@ namespace SecureNotesApp.Models
         public bool IsCompleted { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? OwnerName { get; set; }
     }
 }
