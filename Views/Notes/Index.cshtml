@@ -1,5 +1,9 @@
 @model IEnumerable<SecureNotesApp.Models.Note>
 
+@{
+    ViewData["Title"] = "Ghi chú của tôi";
+}
+
 <div class="main-content">
     <div class="page-header">
         <div class="header-top">
@@ -29,9 +33,21 @@
             @foreach (var note in Model)
             {
                 <div class="note-card" style="background: @note.Color; border-radius: 15px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); position: relative; transition: transform 0.2s;">
-                    @if (note.IsPinned) {
-                        <span style="position: absolute; top: -10px; right: 10px; font-size: 1.5rem;">📌</span>
-                    }
+                    <!-- @if (note.IsPinned) {
+                        <div style="position: absolute; top: 10px; left: 10px; z-index: 10; color: #f59e0b;" title="Đã ghim">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14h10l-2-5V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4z M12 14v7" />
+                            </svg>
+                        </div>
+                    } -->
+
+                    <form asp-action="TogglePin" asp-route-id="@note.Id" method="post" style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+                        <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; filter: @(note.IsPinned ? "none" : "grayscale(100%) opacity(0.3)")" title="@(note.IsPinned ? "Bỏ ghim" : "Ghim lên đầu")">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14h10l-2-5V5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4z M12 14v7" />
+                            </svg>
+                        </button>
+                    </form>
                     
                     <h3 class="note-title" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 10px;">@note.Title</h3>
                     <p class="note-content" style="color: #475569; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap;">@note.Content</p>
@@ -39,16 +55,32 @@
                     <div class="note-footer" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px;">
                         <span style="font-size: 0.75rem; color: #64748b;">@note.CreatedAt.ToString("dd/MM/yyyy")</span>
                         <div class="actions">
-                            <button class="btn-icon" title="Sửa" style="background:none; border:none; cursor:pointer;">
+                            <button class="btn-icon" title="Sửa" 
+                                    onclick="openEditNoteModal(this)"
+                                    data-id="@note.Id"
+                                    data-title="@note.Title"
+                                    data-content="@note.Content"
+                                    data-color="@note.Color"
+                                    style="background:none; border:none; cursor:pointer;">
                                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z M14 7l-7 7"/>
                                 </svg>                            
                             </button>
-                            <button class="btn-icon" title="Xóa" style="background:none; border:none; cursor:pointer;">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2 M10 11v6 M14 11v6" />
-                                </svg>
-                            </button>
+
+                            <form asp-controller="Notes" asp-action="Delete" asp-route-id="@note.Id" method="post" 
+                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa vĩnh viễn ghi chú này không?');"
+                                style="margin: 0; display: inline;">
+                                
+                                @Html.AntiForgeryToken()
+                                
+                                <button type="submit" class="btn-icon" title="Xóa" 
+                                        style="background:none; border:none; cursor:pointer; opacity: 0.6; transition: 0.2s;">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -88,6 +120,42 @@
 </div>
 
 
+<div id="editNoteModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; padding:30px; border-radius:15px; width:500px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);">
+        <h3 class="mb-4">Chỉnh sửa ghi chú ✏️</h3>
+        <form asp-controller="Notes" asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Id" id="editNoteId" />
+            
+            <div class="mb-3">
+                <label class="fw-bold">Tiêu đề</label>
+                <input type="text" name="Title" id="editNoteTitle" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="fw-bold">Nội dung</label>
+                <textarea name="Content" id="editNoteContent" class="form-control" rows="5" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="fw-bold d-block">Đổi màu sắc:</label>
+                <div class="d-flex gap-3 mt-2">
+                    <label style="cursor:pointer"><input type="radio" name="Color" id="color1" value="#fff9c4" /> 🟡</label>
+                    <label style="cursor:pointer"><input type="radio" name="Color" id="color2" value="#c8e6c9" /> 🟢</label>
+                    <label style="cursor:pointer"><input type="radio" name="Color" id="color3" value="#bbdefb" /> 🔵</label>
+                    <label style="cursor:pointer"><input type="radio" name="Color" id="color4" value="#ffcdd2" /> 🔴</label>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="button" onclick="closeEditNoteModal()" class="btn btn-light border">Hủy</button>
+                <button type="submit" class="btn btn-primary" style="background:#4f46e5; border:none;">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <style>
     .note-card:hover {
         transform: translateY(-5px);
@@ -106,4 +174,39 @@
 <script>
     function openAddNoteModal() { document.getElementById('addNoteModal').style.display = 'flex'; }
     function closeAddNoteModal() { document.getElementById('addNoteModal').style.display = 'none'; }
+
+    function openEditNoteModal(btn) {
+        // 1. Lấy dữ liệu từ data-attributes
+        const id = btn.getAttribute('data-id');
+        const title = btn.getAttribute('data-title');
+        const content = btn.getAttribute('data-content');
+        const color = btn.getAttribute('data-color');
+
+        // 2. Điền vào Form
+        document.getElementById('editNoteId').value = id;
+        document.getElementById('editNoteTitle').value = title;
+        document.getElementById('editNoteContent').value = content;
+
+        // 3. Chọn đúng Radio màu sắc
+        const colorRadios = document.getElementsByName('Color');
+        colorRadios.forEach(radio => {
+            if (radio.value === color) radio.checked = true;
+        });
+
+        // 4. Hiện Modal
+        document.getElementById('editNoteModal').style.display = 'flex';
+    }
+
+    function closeEditNoteModal() {
+        document.getElementById('editNoteModal').style.display = 'none';
+    }
+
+
+    window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeEditNoteModal();
+    }
+}
+
+
 </script>

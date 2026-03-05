@@ -18,8 +18,8 @@ public class NotesController : Controller
         
         var notes = await _context.Notes
             .Where(n => n.OwnerID == currentUser)
-            .OrderByDescending(n => n.IsPinned) 
-            .ThenByDescending(n => n.CreatedAt) 
+            .OrderByDescending(n => n.IsPinned)     
+            .ThenByDescending(n => n.CreatedAt)  
             .ToListAsync();
 
         return View(notes ?? new List<Note>());
@@ -44,4 +44,57 @@ public class NotesController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> TogglePin(int id)
+    {
+        var note = await _context.Notes.FindAsync(id);
+        if (note == null) return NotFound();
+
+        note.IsPinned = !note.IsPinned;
+
+        _context.Update(note);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }   
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Note note)
+    {
+        if (id != note.Id) return NotFound();
+
+        if (ModelState.IsValid)
+        {
+            var existingNote = await _context.Notes.FindAsync(id);
+            if (existingNote != null)
+            {
+                existingNote.Title = note.Title;
+                existingNote.Content = note.Content;
+                existingNote.Color = note.Color;
+                
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var note = await _context.Notes.FindAsync(id);
+        
+        if (note != null)
+        {
+            _context.Notes.Remove(note);
+            
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }   
 }
