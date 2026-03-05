@@ -356,42 +356,35 @@
 
 
 
-        // 1. Hàm Mở Modal Sửa (Đây là nơi khởi tạo giá trị công khai)
         function openEditPromptModal(btn) {
-            // Lấy tất cả dữ liệu từ data- attributes của nút bấm
             const id = btn.getAttribute('data-id');
             const title = btn.getAttribute('data-title');
             const category = btn.getAttribute('data-category');
             const desc = btn.getAttribute('data-desc');
             const content = btn.getAttribute('data-content');
             
-            // TRÍCH XUẤT CÔNG KHAI: Chuyển text "True"/"False" thành kiểu boolean của JS
             const isPublicStr = btn.getAttribute('data-ispublic');
             const isPublic = (isPublicStr === 'True' || isPublicStr === 'true');
 
-            // Đổ dữ liệu vào các ô Input (ID phải khớp với HTML)
             document.getElementById('editPromptId').value = id;
             document.getElementById('editPromptTitle').value = title;
             document.getElementById('editPromptDesc').value = desc;
             document.getElementById('editPromptContent').value = content;
 
-            // CẬP NHẬT TRẠNG THÁI CHECKBOX CÔNG KHAI
             const publicCheck = document.getElementById('editIsPublicCheck');
             if (publicCheck) {
                 publicCheck.checked = isPublic; 
             }
 
-            // Xử lý Dropdown danh mục
             const select = document.getElementById('editCategorySelect');
             if (select) {
                 select.value = category;
-                updateEditCategoryData(); // Gọi hàm bên dưới để đồng bộ Icon/Class
+                updateEditCategoryData(); 
             }
 
             document.getElementById('editPromptModal').style.display = 'flex';
         }
 
-        // 2. Hàm đồng bộ Icon và Class khi đổi danh mục (Giữ nguyên và tối ưu)
         function updateEditCategoryData() {
             const select = document.getElementById('editCategorySelect');
             if (!select) return;
