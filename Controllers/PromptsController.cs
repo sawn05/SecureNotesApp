@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SecureNotesApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using SecureNotesApp.Models;
 
 namespace SecureNotesApp.Controllers
 {
+    [Authorize]
     public class PromptsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -92,7 +94,7 @@ namespace SecureNotesApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // HÀM XÓA PROMPT
+        // Delete prompt
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

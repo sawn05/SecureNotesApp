@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SecureNotesApp.Data;
 using SecureNotesApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SecureNotesApp.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,22 +16,27 @@ namespace SecureNotesApp.Controllers
             _context = context;
         }
 
+        [Authorize] // Đảm bảo chỉ người đã đăng nhập mới vào được
         public async Task<IActionResult> Index()
         {
-            var tasks = await _context.TodoTasks.OrderBy(t => t.DueDate).ToListAsync();
+            // 1. Lấy tên người dùng hiện tại
+            var currentUser = User.Identity?.Name;
 
-            // Tính toán thống kê
+            // 2. Chỉ lấy các task mà OwnerName khớp với người đang đăng nhập
+            var tasks = await _context.TodoTasks
+                                    .Where(t => t.OwnerName == currentUser) // LỌC Ở ĐÂY
+                                    .OrderBy(t => t.DueDate)
+                                    .ToListAsync();
+
+            // 3. Các logic tính toán thống kê (giữ nguyên nhưng dựa trên danh sách đã lọc)
             var totalTasks = tasks.Count;
             var completedTasks = tasks.Count(t => t.IsCompleted);
             
-            // Số task sắp đến hạn (trong vòng 7 ngày tới)
             var now = DateTime.Now;
             var upcomingTasks = tasks.Count(t => !t.IsCompleted && t.DueDate >= now && t.DueDate <= now.AddDays(7));
 
-            // Tính phần trăm tiến độ
             int progress = totalTasks > 0 ? (int)Math.Round((double)completedTasks / totalTasks * 100) : 0;
 
-            // Truyền dữ liệu ra View bằng ViewBag
             ViewBag.TotalTasks = totalTasks;
             ViewBag.CompletedTasks = completedTasks;
             ViewBag.UpcomingTasks = upcomingTasks;
@@ -46,8 +53,19 @@ namespace SecureNotesApp.Controllers
             {
                 task.CreatedAt = DateTime.Now;
                 task.IsCompleted = false;
+                task.OwnerName = User.Identity?.Name;
                 
                 _context.TodoTasks.Add(task);
+
+                // var log = new ActivityLog {
+                //     UserId = User.GetUserId(),
+                //     ActionType = "Create",
+                //     EntityType = "Task",
+                //     Description = $"Đã thêm Task mới: {task.Title}",
+                //     CreatedAt = DateTime.Now
+                // };
+                // _context.ActivityLogs.Add(log);
+
                 await _context.SaveChangesAsync();
                 
                 return RedirectToAction(nameof(Index));

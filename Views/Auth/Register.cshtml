@@ -1,0 +1,60 @@
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký | SecureNotes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Sử dụng lại toàn bộ CSS từ trang Login của bạn */
+        :root { --primary: #667eea; --secondary: #764ba2; --text: #1e293b; }
+        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .login-container { background: rgba(255, 255, 255, 0.95); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); width: 100%; max-width: 450px; text-align: center; }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; color: #475569; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px 16px; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--primary); }
+        .btn-reg { width: 100%; padding: 14px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        .error-list { color: #ef4444; font-size: 0.85rem; text-align: left; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div style="font-size: 2.5rem; margin-bottom: 10px;">🔐</div>
+        <h2>Tạo tài khoản mới</h2>
+        <p>Bắt đầu bảo vệ ghi chú của bạn ngay hôm nay</p>
+
+        <form asp-controller="Auth" asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="error-list"></div>
+
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" name="Username" placeholder="Ví dụ: sang_dev" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="Email" placeholder="sang@example.com" required>
+            </div>
+            
+            <div class="row" style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Mật khẩu</label>
+                    <input type="password" name="Password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Xác nhận</label>
+                    <input type="password" name="ConfirmPassword" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-reg">Đăng Ký Ngay</button>
+        </form>
+
+        <div style="margin-top: 24px; font-size: 0.85rem; color: #64748b;">
+            Đã có tài khoản? <a href="/Auth/Login" style="color: var(--primary); text-decoration: none; font-weight: 600;">Đăng nhập</a>
+        </div>
+    </div>
+</body>
+</html>
