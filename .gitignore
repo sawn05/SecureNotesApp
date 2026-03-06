@@ -1,5 +1,10 @@
 bin/
 obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.json.cache
 .vscode/
 *.user
 *.suo

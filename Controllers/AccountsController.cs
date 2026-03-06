@@ -16,11 +16,16 @@ namespace SecureNotesApp.Controllers
             _context = context;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var accounts = await _context.SavedAccounts.ToListAsync();
+            var currentUser = User.Identity?.Name;
             
-            return View(accounts);
+            var myAccounts = await _context.SavedAccounts
+                .Where(a => a.OwnerID == currentUser)
+                .ToListAsync();
+
+            return View(myAccounts);
         }
 
         // Create account
@@ -31,15 +36,15 @@ namespace SecureNotesApp.Controllers
             if (ModelState.IsValid)
             {
                 account.CreatedAt = DateTime.Now;
-                
-                // Lưu vào CSDL
+                account.OwnerID = User.Identity?.Name;
+
                 _context.SavedAccounts.Add(account);
                 await _context.SaveChangesAsync();
                 
                 return RedirectToAction(nameof(Index));
             }
 
-            return RedirectToAction(nameof(Index));
+            return View(account);
         }
 
         // Update account
