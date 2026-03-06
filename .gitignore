@@ -10,3 +10,6 @@ obj/
 *.suo
 node_modules/
 appsettings.Development.json
+
+*.log
+*.sqlite
