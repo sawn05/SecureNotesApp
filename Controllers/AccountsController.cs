@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SecureNotesApp.Controllers
 {
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly ApplicationDbContext _context;

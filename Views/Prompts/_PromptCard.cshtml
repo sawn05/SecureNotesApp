@@ -1,0 +1,44 @@
+@model SecureNotesApp.Models.Prompt
+
+<div class="prompt-card" data-category="@Model.CategoryName" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; height: 100%;">
+    <div class="prompt-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="prompt-category @Model.CategoryClass" style="font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: #f1f5f9; color: #475569;">
+            @Model.CategoryIcon @Model.CategoryName
+            @if (ViewData["IsMine"]?.ToString() == "True" && Model.IsPublic) { 
+                <span title="Đang hiển thị ở cộng đồng" style="margin-left: 5px;">🌐</span> 
+            }
+        </div>
+        
+        <div style="display: flex; gap: 5px;">
+            <form asp-controller="Prompts" asp-action="ToggleFavorite" asp-route-id="@Model.Id" method="post" style="margin:0">
+                <button type="submit" class="btn-icon" style="background:none; border:none; color: @(Model.IsFavorite ? "#ef4444" : "#cbd5e1"); cursor:pointer;">
+                    <svg width="20" height="20" fill="@(Model.IsFavorite ? "currentColor" : "none")" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </button>
+            </form>
+
+            @if (ViewData["IsMine"]?.ToString() == "True") {
+                <form asp-controller="Prompts" asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa không?');">
+                    <button type="submit" style="background:none; border:none; color:#ef4444; cursor:pointer; padding: 0 5px;">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <h3 style="margin:0; font-size:1.1rem; font-weight:700; color:#1e293b;">@Model.Title</h3>
+    <p style="font-size:0.85rem; color:#64748b; flex-grow:1; margin-top:8px;">@Model.Description</p>
+
+    <div style="border-top:1px solid #f1f5f9; padding-top:10px; margin-top:auto; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.75rem; color:#94a3b8;">👤 @(Model.OwnerId ?? "Ẩn danh")</span>
+        
+        <div style="display:flex; gap:8px;">
+            @if (ViewData["IsMine"]?.ToString() == "True") {
+                <button class="btn btn-sm" onclick="openEditPromptModal(this)" data-id="@Model.Id" data-title="@Model.Title" data-category="@Model.CategoryName" data-desc="@Model.Description" data-content="@Model.Content" style="border:1px solid #cbd5e1; background:#f8fafc; font-size:0.75rem; padding:4px 8px; border-radius:6px; font-weight:600;">Sửa</button>
+            }
+            <button class="btn btn-sm" onclick="openViewPromptModal(this)" data-id="@Model.Id" data-title="@Model.Title" data-content="@Model.Content" style="background:#f8fafc; border:1px solid #cbd5e1; font-size:0.75rem; padding:4px 8px; border-radius:6px; font-weight:600;">Xem</button>
+        </div>
+    </div>
+</div>
