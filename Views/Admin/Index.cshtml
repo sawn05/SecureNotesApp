@@ -1,0 +1,38 @@
+@model SecureNotesApp.Models.AdminDashboardViewModel
+
+<div class="main-content">
+    <h1 class="page-title">⚙️ Quản trị hệ thống</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Người dùng</div>
+            <div class="stat-value">@Model.TotalUsers</div>
+        </div>
+        <div class="stat-card" style="border-left-color: #f59e0b;">
+            <div class="stat-label">Tổng ghi chú</div>
+            <div class="stat-value">@Model.TotalNotes</div>
+        </div>
+        @* Thêm các card khác cho Accounts và Tasks *@
+    </div>
+
+    <h2 style="margin-top: 30px;">Thành viên mới nhất</h2>
+    <table class="table" style="width: 100%; margin-top: 15px; background: white; border-radius: 8px; padding: 15px;">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.RecentUsers)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>
+                        <button class="btn-icon-small text-danger">Khóa</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

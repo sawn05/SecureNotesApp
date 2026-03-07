@@ -1,0 +1,56 @@
+@model SecureNotesApp.Models.UserEditViewModel
+
+<div class="main-content">
+    <div class="page-header" style="margin-bottom: 30px;">
+        <h1 class="page-title">✏️ Chỉnh sửa thành viên</h1>
+        <p style="color: #6b7280; font-size: 0.9rem;">ID: @Model.Id</p>
+    </div>
+
+    <div class="form-container" style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); max-width: 600px;">
+        <form asp-action="EditUser" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-bottom: 15px;"></div>
+            
+            @* Luôn phải có Hidden ID để gởi lên Server *@
+            <input type="hidden" asp-for="Id" />
+
+            @* Email Field *@
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label asp-for="Email" style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Địa chỉ Email</label>
+                <input asp-for="Email" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; outline: none;" placeholder="name@example.com" />
+                <span asp-validation-for="Email" class="text-danger" style="font-size: 0.8rem;"></span>
+            </div>
+
+            @* UserName Field *@
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label asp-for="UserName" style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Tên đăng nhập</label>
+                <input asp-for="UserName" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; outline: none;" />
+                <span asp-validation-for="UserName" class="text-danger" style="font-size: 0.8rem;"></span>
+            </div>
+
+            @* Role Selection *@
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Vai trò hệ thống</label>
+                <select asp-for="SelectedRole" class="form-control" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">
+                    <option value="">-- Chọn vai trò --</option>
+                    @foreach (var role in Model.AllRoles)
+                    {
+                        <option value="@role">@role</option>
+                    }
+                </select>
+                <div style="margin-top: 8px; font-size: 0.85rem; color: #6366f1;">
+                    Quyền hiện tại: <strong>@(string.Join(", ", Model.CurrentRoles))</strong>
+                </div>
+            </div>
+
+            @* Action Buttons *@
+            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                <button type="submit" style="flex: 2; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    Lưu thay đổi
+                </button>
+                <a asp-action="Users" style="flex: 1; padding: 12px; background: #f3f4f6; color: #374151; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    Hủy
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
