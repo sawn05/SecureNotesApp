@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace SecureNotesApp.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -15,6 +18,14 @@ namespace SecureNotesApp.Controllers
         }
 
         [HttpGet]
+        [Route("Auth/Login")]
+        public IActionResult Login(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
@@ -24,7 +35,7 @@ namespace SecureNotesApp.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Tasks");
+                return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không chính xác.");
@@ -68,6 +79,12 @@ namespace SecureNotesApp.Controllers
             return View();
         }
 
+        // [HttpPost]
+        // public async Task<IActionResult> Logout()
+        // {
+        //     await _signInManager.SignOutAsync();
+        //     return RedirectToAction("Index", "Home");
+        // }
 
         
     }

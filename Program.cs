@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SecureNotesApp.Data;  // Giả sử namespace đúng cho DbContext
+using SecureNotesApp.Data;  
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Add Identity with roles (remove AddDefaultIdentity to avoid duplicate scheme)
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false;  // Kết hợp config từ AddDefaultIdentity cũ
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
@@ -24,15 +25,23 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Configure cookie paths
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Auth/Login";  // Đổi từ /Account/Login nếu cần
-    options.AccessDeniedPath = "/Auth/AccessDenied";
-});
-
 // Add MVC controllers and views
 builder.Services.AddControllersWithViews();
+
+
+// Configure cookie paths
+builder.Services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme, options =>
+{
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
+
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.Redirect("/Auth/Login" + context.Request.QueryString);
+        return Task.CompletedTask;
+    };
+});
 
 var app = builder.Build();
 
@@ -54,6 +63,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "auth",
+    pattern: "Account/Login",
+    defaults: new { controller = "Auth", action = "Login" });
 
 app.MapControllerRoute(
     name: "default",
