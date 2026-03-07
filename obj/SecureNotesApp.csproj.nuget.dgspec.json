@@ -58,10 +58,6 @@
               "target": "Package",
               "version": "[10.0.2, )"
             },
-            "Microsoft.AspNetCore.Identity.UI": {
-              "target": "Package",
-              "version": "[10.0.2, )"
-            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[10.0.2, )"
