@@ -39,10 +39,8 @@ namespace SecureNotesApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
-            // 1. Lấy danh sách tất cả người dùng
             var users = await _userManager.Users.ToListAsync();
             
-            // 2. Tạo một danh sách ViewModel để chứa thông tin hiển thị (bao gồm cả Role)
             var userList = new List<UserManagementViewModel>();
 
             foreach (var user in users)
@@ -109,11 +107,9 @@ namespace SecureNotesApp.Controllers
             user.Email = model.Email;
             user.UserName = model.UserName;
 
-            // Cập nhật thông tin cơ bản
             var updateResult = await _userManager.UpdateAsync(user);
             if (updateResult.Succeeded)
             {
-                // Cập nhật Role: Xóa hết role cũ, thêm role mới được chọn
                 var roles = await _userManager.GetRolesAsync(user);
                 await _userManager.RemoveFromRolesAsync(user, roles);
                 if (!string.IsNullOrEmpty(model.SelectedRole))
@@ -124,6 +120,33 @@ namespace SecureNotesApp.Controllers
                 return RedirectToAction(nameof(Users));
             }
             return View(model);
+        }
+
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Accounts()
+        {
+            // Lấy tất cả tài khoản từ database
+            var allAccounts = await _context.SavedAccounts.ToListAsync();
+            
+            var sortedAccounts = allAccounts.OrderBy(a => a.OwnerID).ToList();
+
+            return View(sortedAccounts);
+        }
+
+        // Thêm Action Xóa tài khoản dành cho Admin
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var account = await _context.SavedAccounts.FindAsync(id);
+            if (account == null) return NotFound();
+
+            _context.SavedAccounts.Remove(account);
+            await _context.SaveChangesAsync();
+            
+            TempData["Message"] = "Đã xóa tài khoản khỏi hệ thống thành công!";
+            return RedirectToAction(nameof(Accounts));
         }
     }
 }
