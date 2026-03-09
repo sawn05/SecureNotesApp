@@ -33,6 +33,21 @@ namespace SecureNotesApp.Controllers
                 RecentUsers = await _userManager.Users.OrderByDescending(u => u.Id).Take(5).ToListAsync()
             };
 
+
+            var last7Days = Enumerable.Range(0, 7)
+                .Select(i => DateTime.Today.AddDays(-i))
+                .Reverse()
+                .ToList();
+
+            foreach (var date in last7Days)
+            {
+                model.ChartLabels.Add(date.ToString("dd/MM"));
+                
+                var count = await _context.Notes
+                    .CountAsync(n => n.CreatedAt.Date == date.Date);
+                model.ChartData.Add(count);
+            }
+
             return View(model);
         }
 
@@ -127,7 +142,6 @@ namespace SecureNotesApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Accounts()
         {
-            // Lấy tất cả tài khoản từ database
             var allAccounts = await _context.SavedAccounts.ToListAsync();
             
             var sortedAccounts = allAccounts.OrderBy(a => a.OwnerID).ToList();
@@ -135,7 +149,6 @@ namespace SecureNotesApp.Controllers
             return View(sortedAccounts);
         }
 
-        // Thêm Action Xóa tài khoản dành cho Admin
         [HttpPost]
         public async Task<IActionResult> DeleteAccount(int id)
         {
@@ -147,6 +160,30 @@ namespace SecureNotesApp.Controllers
             
             TempData["Message"] = "Đã xóa tài khoản khỏi hệ thống thành công!";
             return RedirectToAction(nameof(Accounts));
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Notes()
+        {
+            var allNotes = await _context.Notes
+                .OrderByDescending(n => n.CreatedAt)
+                .ToListAsync();
+
+            return View(allNotes);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteNote(int id)
+        {
+            var note = await _context.Notes.FindAsync(id);
+            if (note == null) return NotFound();
+
+            _context.Notes.Remove(note);
+            await _context.SaveChangesAsync();
+            
+            TempData["Message"] = "Đã xóa ghi chú thành công!";
+            return RedirectToAction(nameof(Notes));
         }
     }
 }

@@ -9,5 +9,7 @@ namespace SecureNotesApp.Models
         public int TotalAccounts { get; set; }
         public int TotalTasks { get; set; }
         public List<IdentityUser> RecentUsers { get; set; }
+        public List<string> ChartLabels { get; set; } = new();
+        public List<int> ChartData { get; set; } = new();
     }
 }
