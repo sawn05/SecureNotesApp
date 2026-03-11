@@ -185,5 +185,55 @@ namespace SecureNotesApp.Controllers
             TempData["Message"] = "Đã xóa ghi chú thành công!";
             return RedirectToAction(nameof(Notes));
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Tasks()
+        {
+            var allTasks = await _context.TodoTasks
+                .OrderByDescending(t => t.Id) 
+                .ToListAsync();
+
+            return View(allTasks);
+        }
+
+        // Delete Task
+        [HttpPost]
+        public async Task<IActionResult> DeleteTask(int id)
+        {
+            var task = await _context.TodoTasks.FindAsync(id);
+            if (task == null) return NotFound();
+
+            _context.TodoTasks.Remove(task);
+            await _context.SaveChangesAsync();
+            
+            TempData["Message"] = "Đã dọn dẹp Task thành công!";
+            return RedirectToAction(nameof(Tasks));
+        }
+
+
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Prompts()
+        {
+            var prompts = await _context.Prompts
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+
+            return View(prompts);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePrompt(int id)
+        {
+            var prompt = await _context.Prompts.FindAsync(id);
+            if (prompt == null) return NotFound();
+
+            _context.Prompts.Remove(prompt);
+            await _context.SaveChangesAsync();
+            
+            TempData["Message"] = "Đã xóa Prompt thành công!";
+            return RedirectToAction(nameof(Prompts));
+        }
     }
 }

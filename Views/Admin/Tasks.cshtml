@@ -1,0 +1,78 @@
+@model IEnumerable<SecureNotesApp.Models.TodoTask>
+
+@{
+    ViewData["Title"] = "Quản lý Công việc";
+}
+
+<div class="main-content" style="padding: 2rem; background: #f8fafc; min-height: 100vh;">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-size: 1.875rem; font-weight: 800; color: #1e293b; margin: 0;">📋 Quản lý Công việc</h1>
+            <p style="color: #64748b;">Giám sát tất cả các tác vụ đang diễn ra trên hệ thống.</p>
+        </div>
+        <div style="background: #6366f1; color: white; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 700; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+            Tổng Task: @Model.Count()
+        </div>
+    </div>
+
+    <div class="glass-table" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f1f5f9; text-align: left; color: #475569; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <th style="padding: 1.25rem 1.5rem;">Nội dung công việc</th>
+                    <th style="padding: 1.25rem 1.5rem;">Trạng thái</th>
+                    <th style="padding: 1.25rem 1.5rem;">Người sở hữu</th>
+                    <th style="padding: 1.25rem 1.5rem;">Hạn chót</th>
+                    <th style="padding: 1.25rem 1.5rem; text-align: right;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s;">
+                        <td style="padding: 1.25rem 1.5rem;">
+                            <div style="font-weight: 600; color: #1e293b; @(task.IsCompleted ? "text-decoration: line-through; color: #94a3b8;" : "")">
+                                @task.Title
+                            </div>
+                        </td>
+                        <td style="padding: 1.25rem 1.5rem;">
+                            @if (task.IsCompleted)
+                            {
+                                <span style="background: #d1fae5; color: #065f46; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">
+                                    ✓ Hoàn thành
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="background: #fee2e2; color: #991b1b; padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">
+                                    ⌛ Đang chờ
+                                </span>
+                            }
+                        </td>
+                        <td style="padding: 1.25rem 1.5rem;">
+                            <div style="display: flex; align-items: center; font-size: 0.875rem; color: #475569;">
+                                <div style="width: 24px; height: 24px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 0.7rem; font-weight: 800;">
+                                    @task.OwnerName[..1].ToUpper()
+                                </div>
+                                @task.OwnerName
+                            </div>
+                        </td>
+                        <td style="padding: 1.25rem 1.5rem; font-size: 0.875rem; color: #64748b;">
+                            @(task.DueDate == default(DateTime) ? "Không có" : task.DueDate.ToString("dd/MM/yyyy"))
+                        </td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <form asp-action="DeleteTask" asp-route-id="@task.Id" method="post" 
+                                  onsubmit="return confirm('Xác nhận xóa Task này của sếp @task.OwnerName?');">
+                                <button type="submit" style="background: #fff1f2; color: #e11d48; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; transition: 0.2s;">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
