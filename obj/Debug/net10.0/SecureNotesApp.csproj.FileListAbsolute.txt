@@ -264,4 +264,4 @@ C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\refint\SecureNotesApp.dll
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\SecureNotesApp.pdb
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\SecureNotesApp.genruntimeconfig.cache
 C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\ref\SecureNotesApp.dll
-C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-5vn5krlwe7-5vn5krlwe7.gz
+C:\Users\Sángg\SecureNotesApp\obj\Debug\net10.0\compressed\czdt0sj3gc-{0}-c80i9ivyni-c80i9ivyni.gz

@@ -16,6 +16,7 @@ namespace SecureNotesApp.Controllers
             _context = context;
         }
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -123,5 +124,6 @@ namespace SecureNotesApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        
     }
 }

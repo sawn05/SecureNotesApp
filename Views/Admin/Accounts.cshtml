@@ -38,7 +38,7 @@
                             </span>
                         </td>
                         <td style="padding: 15px; text-align: right;">
-                            <form asp-action="DeleteAccount" asp-route-id="@acc.Id" method="post" 
+                            <form asp-action="DeleteAccount" asp-route-id="@acc.Id" method="post"
                                   onsubmit="return confirm('Sáng có chắc muốn xóa tài khoản này của người dùng @acc.OwnerID không?');">
                                 <button type="submit" class="btn-icon-small" style="border:none; background:none; cursor:pointer; color: #ef4444;">
                                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">

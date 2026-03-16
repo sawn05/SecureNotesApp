@@ -235,5 +235,52 @@ namespace SecureNotesApp.Controllers
             TempData["Message"] = "Đã xóa Prompt thành công!";
             return RedirectToAction(nameof(Prompts));
         }
+
+
+        // 1. Giao diện sửa
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditPrompt(int id)
+        {
+            var prompt = await _context.Prompts.FindAsync(id);
+            if (prompt == null) return NotFound();
+            return View(prompt);
+        }
+
+        // 2. Xử lý lưu dữ liệu
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPrompt(int id, Prompt promptFromForm)
+        {
+            if (id != promptFromForm.Id) return NotFound();
+
+            var existingPrompt = await _context.Prompts.FindAsync(id);
+            
+            if (existingPrompt == null) return NotFound();
+
+            existingPrompt.Title = promptFromForm.Title;
+            existingPrompt.Description = promptFromForm.Description;
+            existingPrompt.Content = promptFromForm.Content;
+            existingPrompt.CategoryName = promptFromForm.CategoryName;
+            existingPrompt.CategoryIcon = promptFromForm.CategoryIcon;
+            existingPrompt.CategoryClass = promptFromForm.CategoryClass;
+            existingPrompt.IsFavorite = promptFromForm.IsFavorite;
+            existingPrompt.IsPublic = promptFromForm.IsPublic;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(existingPrompt);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Đã cập nhật đúng những gì bạn sửa!";
+                    return RedirectToAction(nameof(Prompts));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi khi lưu: " + ex.Message);
+                }
+            }
+            return View(promptFromForm);
+        }
     }
 }

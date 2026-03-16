@@ -28,7 +28,8 @@
         new { Name = "Lập trình", Icon = "💻", IsActive = false },
         new { Name = "Viết lách", Icon = "✍️", IsActive = false },
         new { Name = "Email", Icon = "📧", IsActive = false },
-        new { Name = "Sáng tạo", Icon = "🎨", IsActive = false }
+        new { Name = "Sáng tạo", Icon = "🎨", IsActive = false },
+        new { Name = "Khác", Icon = "📝", IsActive = false }
     };
 
     // Hàm phụ: Tính thời gian "vừa xong", "2 ngày trước"...
@@ -429,59 +430,59 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchInput');
-        
-        if (searchInput) {
-            searchInput.addEventListener('input', function (e) {
-                const searchTerm = e.target.value.toLowerCase().trim();
-                const sections = document.querySelectorAll('.prompts-section');
+            const searchInput = document.getElementById('searchInput');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function (e) {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const sections = document.querySelectorAll('.prompts-section');
 
-                sections.forEach(section => {
-                    const cards = section.querySelectorAll('.prompt-card');
-                    let hasVisibleCard = false;
+                    sections.forEach(section => {
+                        const cards = section.querySelectorAll('.prompt-card');
+                        let hasVisibleCard = false;
 
-                    cards.forEach(card => {
-                        const title = card.querySelector('.prompt-title')?.textContent.toLowerCase() || "";
-                        const description = card.querySelector('.prompt-description')?.textContent.toLowerCase() || "";
-                        const category = card.getAttribute('data-category')?.toLowerCase() || "";
-                        const author = card.querySelector('.prompt-meta')?.textContent.toLowerCase() || "";
+                        cards.forEach(card => {
+                            const title = card.querySelector('.prompt-title')?.textContent.toLowerCase() || "";
+                            const description = card.querySelector('.prompt-description')?.textContent.toLowerCase() || "";
+                            const category = card.getAttribute('data-category')?.toLowerCase() || "";
+                            const author = card.querySelector('.prompt-meta')?.textContent.toLowerCase() || "";
 
-                        // Logic kiểm tra
-                        const isMatch = title.includes(searchTerm) || 
-                                        description.includes(searchTerm) || 
-                                        category.includes(searchTerm) ||
-                                        author.includes(searchTerm);
+                            // Logic kiểm tra
+                            const isMatch = title.includes(searchTerm) || 
+                                            description.includes(searchTerm) || 
+                                            category.includes(searchTerm) ||
+                                            author.includes(searchTerm);
 
-                        if (isMatch) {
-                            card.style.display = "flex";
-                            card.style.animation = "fadeIn 0.3s ease";
-                            hasVisibleCard = true;
+                            if (isMatch) {
+                                card.style.display = "flex";
+                                card.style.animation = "fadeIn 0.3s ease";
+                                hasVisibleCard = true;
+                            } else {
+                                card.style.display = "none";
+                            }
+                        });
+
+                        const sectionTitle = section.querySelector('.section-title');
+                        const emptyMsg = section.querySelector('.empty-search-msg');
+
+                        if (!hasVisibleCard && searchTerm !== "") {
+                            if (!emptyMsg) {
+                                const msg = document.createElement('div');
+                                msg.className = 'empty-search-msg';
+                                msg.innerHTML = `<div style="text-align:center; padding:20px; color:#94a3b8;">🔍 Không tìm thấy Prompt nào khớp với "${searchTerm}" trong phần này.</div>`;
+                                section.querySelector('.prompts-grid').appendChild(msg);
+                            }
                         } else {
-                            card.style.display = "none";
+                            if (emptyMsg) emptyMsg.remove();
                         }
                     });
-
-                    const sectionTitle = section.querySelector('.section-title');
-                    const emptyMsg = section.querySelector('.empty-search-msg');
-
-                    if (!hasVisibleCard && searchTerm !== "") {
-                        if (!emptyMsg) {
-                            const msg = document.createElement('div');
-                            msg.className = 'empty-search-msg';
-                            msg.innerHTML = `<div style="text-align:center; padding:20px; color:#94a3b8;">🔍 Không tìm thấy Prompt nào khớp với "${searchTerm}" trong phần này.</div>`;
-                            section.querySelector('.prompts-grid').appendChild(msg);
-                        }
-                    } else {
-                        if (emptyMsg) emptyMsg.remove();
-                    }
                 });
-            });
-        }
-    });
+            }
+        });
 
-    function handleEmptyResult() {
-        const visibleCards = document.querySelectorAll('.prompt-card[style*="display: flex"]');
-        // Bạn có thể thêm logic hiển thị thông báo "Không tìm thấy" ở đây nếu cần
-    }
+        function handleEmptyResult() {
+            const visibleCards = document.querySelectorAll('.prompt-card[style*="display: flex"]');
+            // Bạn có thể thêm logic hiển thị thông báo "Không tìm thấy" ở đây nếu cần
+        }
     </script>
 }

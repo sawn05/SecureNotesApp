@@ -1,0 +1,63 @@
+@model SecureNotesApp.Models.Prompt
+
+<div class="main-content" style="padding: 2rem; background: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center;">
+    
+    <div style="width: 100%; max-width: 800px;">
+        <a asp-action="Prompts" style="text-decoration: none; color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Quay lại danh sách
+        </a>
+
+        <div style="background: white; border-radius: 24px; padding: 2.5rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #f1f5f9;">
+            <h2 style="font-weight: 800; color: #1e293b; margin-bottom: 0.5rem;">✏️ Chỉnh sửa Prompt</h2>
+            <p style="color: #64748b; margin-bottom: 2rem;">Thay đổi nội dung để tối ưu hóa kết quả AI.</p>
+
+            <form asp-action="EditPrompt" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CreatedAt" />
+                <input type="hidden" asp-for="OwnerId" />
+                <input type="hidden" asp-for="UseCount" />
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-weight: 700; color: #475569; margin-bottom: 8px;">Tiêu đề Prompt</label>
+                        <input asp-for="Title" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #e2e8f0; outline: none;" placeholder="Ví dụ: Tóm tắt văn bản chuyên sâu" />
+                        <span asp-validation-for="Title" style="color: #ef4444; font-size: 0.8rem;"></span>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 700; color: #475569; margin-bottom: 8px;">Tên danh mục</label>
+                        <input asp-for="CategoryName" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #e2e8f0;" />
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 700; color: #475569; margin-bottom: 8px;">Icon (Emoji)</label>
+                        <input asp-for="CategoryIcon" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #e2e8f0;" placeholder="💡, 💻, 🚀..." />
+                    </div>
+
+                    <div style="grid-column: span 2;">
+                        <label style="display: block; font-weight: 700; color: #475569; margin-bottom: 8px;">Nội dung câu lệnh (Content)</label>
+                        <textarea asp-for="Content" rows="6" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0; font-family: monospace;"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 20px; grid-column: span 2; background: #f8fafc; padding: 1rem; border-radius: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" asp-for="IsFavorite" style="width: 18px; height: 18px;"> Yêu thích ⭐
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" asp-for="IsPublic" style="width: 18px; height: 18px;"> Công khai 🌐
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button type="submit" style="flex: 1; background: #6366f1; color: white; padding: 1rem; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
+                        Lưu thay đổi
+                    </button>
+                    <a asp-action="Prompts" style="flex: 1; text-align: center; background: #f1f5f9; color: #475569; padding: 1rem; border-radius: 12px; text-decoration: none; font-weight: 700;">
+                        Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
