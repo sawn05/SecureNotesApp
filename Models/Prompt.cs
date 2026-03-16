@@ -12,15 +12,14 @@ namespace SecureNotesApp.Models
         public string Title { get; set; }
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         public string Content { get; set; }
 
-        // Thông tin Danh mục (Ví dụ: "Lập trình", "💻", "coding")
         public string CategoryName { get; set; } 
         public string CategoryIcon { get; set; } 
-        public string CategoryClass { get; set; }
+        public string? CategoryClass { get; set; }
 
         public bool IsFavorite { get; set; } = false;
         

@@ -1,0 +1,92 @@
+@model IEnumerable<SecureNotesApp.Models.UserManagementViewModel>
+@{
+    ViewData["Title"] = "Quản lý thành viên";
+}
+
+
+<div class="main-content">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h1 class="page-title">👥 Quản lý thành viên</h1>
+        <div class="badge">Tổng số: @Model.Count()</div>
+    </div>
+
+    <div class="table-container" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="text-align: left; border-bottom: 2px solid #f3f4f6;">
+                    <th style="padding: 12px;">Người dùng</th>
+                    <th style="padding: 12px;">Vai trò</th>
+                    <th style="padding: 12px;">Trạng thái</th>
+                    <th style="padding: 12px; text-align: right;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                        <td style="padding: 15px;">
+                            <div style="font-weight: 600;">@user.UserName</div>
+                            <div style="font-size: 0.85rem; color: #6b7280;">@user.Email</div>
+                        </td>
+                        <td style="padding: 15px;">
+                            @foreach (var role in user.Roles)
+                            {
+                                <span class="badge @(role == "Admin" ? "bg-danger" : "bg-primary")" 
+                                      style="padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; color: white; background: @(role == "Admin" ? "#ef4444" : "#6366f1")">
+                                    @role
+                                </span>
+                            }
+                        </td>
+                        <td style="padding: 15px;">
+                            @if (user.IsLocked)
+                            {
+                                <span style="color: #ef4444; display: flex; align-items: center; gap: 5px;">
+                                    Bị khóa
+                                </span>
+                            }
+                            else
+                            {
+                                <span style="color: #10b981; display: flex; align-items: center; gap: 5px;">
+                                    Hoạt động
+                                </span>
+                            }
+                        </td>
+                        <!-- <td style="padding: 15px; text-align: right;">
+                            @if (user.Email != User.Identity.Name)
+                            {
+                                <form asp-action="ToggleLock" asp-route-id="@user.Id" method="post" style="display: inline;">
+                                    <button type="submit" class="btn-icon-small" title="@(user.IsLocked ? "Mở khóa" : "Khóa")" 
+                                            style="border: none; background: none; cursor: pointer; color: @(user.IsLocked ? "#10b981" : "#ef4444")">
+                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            @if (user.IsLocked) { <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2z" /> }
+                                            else { <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zM12 11V7a4 4 0 118 0m-4 8v2" /> }
+                                        </svg>
+                                    </button>
+                                </form>
+                            }
+                        </td> -->
+                        <td style="padding: 15px; text-align: right; display: flex; gap: 5px; justify-content: flex-end;">
+                            @if (user.Email != User.Identity.Name) 
+                            {
+                                <a asp-action="EditUser" asp-route-id="@user.Id" class="btn-icon-small" title="Sửa">
+                                    <svg width="20" height="20" fill="none" stroke="blue" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                </a>
+
+                                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post" 
+                                    onsubmit="return confirm('Sáng có chắc muốn xóa vĩnh viễn người dùng này không?');">
+                                    <button type="submit" class="btn-icon-small text-danger" style="border:none; background:none; cursor:pointer;">
+                                        <svg width="20" height="20" fill="none" stroke="red" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

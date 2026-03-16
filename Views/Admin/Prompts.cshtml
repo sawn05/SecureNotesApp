@@ -1,0 +1,105 @@
+@model IEnumerable<SecureNotesApp.Models.Prompt>
+
+@{
+    ViewData["Title"] = "Quản lý Prompts";
+}
+
+<style>
+    .main-content {
+        margin-left: 250px;
+        flex: 1;
+        min-width: 0;
+    }
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; 
+    }
+    .custom-table th, .custom-table td {
+        padding: 1.25rem 1.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+
+<div class="main-content" style="padding: 2rem; background: #f8fafc; min-height: 100vh;">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="font-size: 1.875rem; font-weight: 800; color: #1e293b; margin: 0;">🤖 Quản lý Prompts</h1>
+            <p style="color: #64748b;">Quản lý kho câu lệnh AI và danh mục hệ thống.</p>
+        </div>
+        <div style="background: #6366f1; color: white; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 700; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);">
+            Tổng Prompt: @Model.Count()
+        </div>
+    </div>
+
+    <div class="glass-table" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border: 1px solid #f1f5f9;">
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                    <tr style="background: #f1f5f9; text-align: left; color: #475569; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        <th style="width: 25%;">Nội dung Prompt</th>
+                        <th style="width: 15%;">Danh mục</th>
+                        <th style="width: 10%;">Lượt dùng</th>
+                        <th style="width: 15%;">Ngày tạo</th>
+                        <th style="width: 20%;">Chủ sở hữu</th>
+                        <th style="width: 15%; text-align: right;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s;">
+                            @* Các cột cũ giữ nguyên... *@
+                            <td style="padding: 1.25rem 1.5rem;">
+                                <div style="font-weight: 600; color: #1e293b;">@p.Title</div>
+                            </td>
+                            <td>
+                                <span style="background: #eef2ff; color: #6366f1; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem;">
+                                    @p.CategoryIcon @p.CategoryName
+                                </span>
+                            </td>
+                            <td style="font-weight: 700;">@p.UseCount</td>
+                            <td style="color: #64748b; font-size: 0.875rem;">@p.CreatedAt.ToString("dd/MM/yyyy")</td>
+
+                            <td style="padding: 1.25rem 1.5rem;">
+                                <div style="display: flex; align-items: center; font-size: 0.875rem; color: #475569;">
+                                    <div style="width: 24px; height: 24px; background: #e0e7ff; color: #4338ca; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 0.7rem; font-weight: 800;">
+                                        @(!string.IsNullOrEmpty(p.OwnerId) ? p.OwnerId[..1].ToUpper() : "A")
+                                    </div>
+                                    <span style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        @(p.OwnerId ?? "Hệ thống")
+                                    </span>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">
+                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                    <a asp-action="EditPrompt" asp-route-id="@p.Id" style="padding: 0.5rem; background: #f1f5f9; border-radius: 8px; color: #6366f1;">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </a>
+
+                                    <form asp-action="DeletePrompt" asp-route-id="@p.Id" method="post" 
+                                          onsubmit="return confirm('Sếp có chắc muốn xóa Prompt này không?');" style="display:inline;">
+                                        <button type="submit" style="background: #fff1f2; color: #e11d48; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer; transition: 0.2s;">
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

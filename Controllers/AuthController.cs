@@ -69,7 +69,7 @@ namespace SecureNotesApp.Controllers
             {
                 // Đăng ký xong tự động cho đăng nhập luôn
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Tasks");
+                return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in result.Errors)

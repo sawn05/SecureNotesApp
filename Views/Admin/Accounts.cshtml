@@ -1,0 +1,55 @@
+@model IEnumerable<SecureNotesApp.Models.SavedAccount>
+
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+
+<div class="main-content">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h1 class="page-title">🛡️ Quản lý tài khoản toàn hệ thống</h1>
+        <div class="badge" style="background: #6366f1; color: white; padding: 5px 15px; border-radius: 20px;">
+            Tổng: @Model.Count()
+        </div>
+    </div>
+
+    <div class="table-container" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <table class="table" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="text-align: left; border-bottom: 2px solid #f3f4f6; color: #6b7280; font-size: 0.9rem;">
+                    <th style="padding: 12px;">Nền tảng / Website</th>
+                    <th style="padding: 12px;">Tên đăng nhập</th>
+                    <th style="padding: 12px;">Người sở hữu (Owner)</th>
+                    <th style="padding: 12px; text-align: right;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var acc in Model)
+                {
+                    <tr style="border-bottom: 1px solid #f3f4f6; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 15px;">
+                            <div style="font-weight: 600; color: #1f2937;">@acc.PlatformGroup</div>
+                        </td>
+                        <td style="padding: 15px; color: #4b5563;">
+                            <code>@acc.Username</code>
+                        </td>
+                        <td style="padding: 15px;">
+                            <span style="background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem;">
+                                👤 @acc.OwnerID
+                            </span>
+                        </td>
+                        <td style="padding: 15px; text-align: right;">
+                            <form asp-action="DeleteAccount" asp-route-id="@acc.Id" method="post"
+                                  onsubmit="return confirm('Sáng có chắc muốn xóa tài khoản này của người dùng @acc.OwnerID không?');">
+                                <button type="submit" class="btn-icon-small" style="border:none; background:none; cursor:pointer; color: #ef4444;">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

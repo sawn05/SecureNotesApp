@@ -256,7 +256,6 @@ body {
 /* ===== MAIN CONTENT ===== */
 .main-content {
   flex: 1;
-  /* margin-left: 280px; */
   padding: var(--spacing-xl);
   min-height: 100vh;
 }
