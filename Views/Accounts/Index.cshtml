@@ -2,9 +2,7 @@
 
 @{
     ViewData["Title"] = "Quản lý Tài khoản";
-    // Layout = "_Layout"; // Bỏ comment nếu dùng chung Layout
 
-    // KỸ THUẬT GOM NHÓM: Nhóm các tài khoản có cùng PlatformGroup (Ví dụ: gom hết Bank vào 1 nhóm)
     var groupedAccounts = Model != null ? Model.GroupBy(a => a.PlatformGroup ?? "Khác") : null;
 }
 

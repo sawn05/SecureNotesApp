@@ -237,7 +237,6 @@ namespace SecureNotesApp.Controllers
         }
 
 
-        // 1. Giao diện sửa
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditPrompt(int id)
         {
@@ -246,7 +245,6 @@ namespace SecureNotesApp.Controllers
             return View(prompt);
         }
 
-        // 2. Xử lý lưu dữ liệu
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPrompt(int id, Prompt promptFromForm)
