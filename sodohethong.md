@@ -1,41 +1,45 @@
+```mermaid
 graph TD
-    %% Định nghĩa các node và subgraph
-    User(("Người dùng (User)"))
-    
-    subgraph Client_Side ["Client Side (Trình duyệt)"]
-        Browser["Giao diện Web / JavaScript"]
+    %% Định nghĩa các thực thể
+    User((Người dùng))
+
+    subgraph Client_Side ["Client Side"]
+        Browser["Trình duyệt (Web Interface)"]
     end
 
-    subgraph Server_Side ["ASP.NET Core MVC Web Server"]
+    subgraph Server_Side ["ASP.NET Core Backend"]
+        direction TB
         Controller["NotesController"]
-        Auth["Identity (Đăng nhập/Phân quyền)"]
+        Auth["Identity & Auth"]
         Security["SecurityHelper (AES-256)"]
-        Cache["IMemoryCache (Caching)"]
+        Cache["IMemoryCache"]
     end
 
-    subgraph Storage ["Lưu trữ dữ liệu"]
-        DB[("SQL Server Database")]
-        KeyStore["AppSettings / Key Vault"]
+    subgraph Storage ["Data Persistence"]
+        DB[("SQL Server DB")]
+        KeyStore["Key Vault / AppSettings"]
     end
 
-    %% Luồng ghi dữ liệu (Lưu ghi chú - Mũi tên đi xuống)
-    User -- 1. Nhập nội dung --> Browser
-    Browser -- 2. HTTPS Post (Plain Text) --> Controller
-    Controller -- 3. Check quyền --> Auth
-    Controller -- 4. Lấy Key mã hóa --> KeyStore
-    Controller -- 5. Gửi Plain Text --> Security
-    Security -- 6. Trả về Cipher Text (Mã hóa) --> Controller
-    Controller -- 7. Lưu Cipher Text --> DB
+    %% Luồng ghi dữ liệu (Write Flow)
+    User -->|1. Nhập nội dung| Browser
+    Browser -->|2. HTTPS POST| Controller
+    Controller -.->|3. Verify| Auth
+    Controller <-->|4. Fetch Key| KeyStore
+    Controller -->|5. Plain Text| Security
+    Security -->|6. Cipher Text| Controller
+    Controller -->|7. Save| DB
 
-    %% Luồng đọc dữ liệu (Xem ghi chú - Mũi tên đi lên)
-    %% Đã đổi sang mũi tên nét liền để tránh lỗi
-    DB -- 8. Trả về Cipher Text --> Controller
-    Controller -- 9. Gửi Cipher Text --> Security
-    Security -- 10. Trả về Plain Text --> Controller
-    Controller -- 11. Render HTML --> Browser
-    Browser -- 12. Hiển thị nội dung --> User
+    %% Luồng đọc dữ liệu (Read Flow)
+    DB -.->|8. Cipher Text| Controller
+    Controller -->|9. Decrypt request| Security
+    Security -.->|10. Plain Text| Controller
+    Controller -->|11. Render View| Browser
+    Browser -->|12. View Note| User
 
-    %% Style (Tô màu cho dễ nhìn)
-    style Security fill:#f96,stroke:#333,stroke-width:2px,color:black
-    style DB fill:#bbf,stroke:#333,stroke-width:2px,color:black
-    style KeyStore fill:#ff9,stroke:#f66,stroke-width:2px,color:black
+    %% Styling
+    style User fill:#fff,stroke:#333
+    style Security fill:#f96,stroke:#333,stroke-width:2px
+    style DB fill:#bbf,stroke:#333,stroke-width:2px
+    style KeyStore fill:#ff9,stroke:#f66,stroke-width:2px
+    style Auth fill:#dfd,stroke:#333
+```
