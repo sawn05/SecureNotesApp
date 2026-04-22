@@ -39,14 +39,12 @@
 - Mở terminal **(Cltr + `)** và chạy lệnh
   ```bash
   git clone https://github.com/sawn05/SecureNotesApp
-  **3. Cấu hình chuỗi kết nối (Connection String)**
-  ```
+**3. Cấu hình chuỗi kết nối (Connection String)**
 - Mở thư mục dự án (Folder chứa file `.csproj`) bằng VS Code.
 - Mở file `appsettings.json`.
 - Tìm đến thuộc tính `"DefaultConnection"` và thay đổi `Server=.` thành tên SQL Server thực tế trên máy của bạn (Ví dụ: `Server=.\SQLEXPRESS` hoặc `Server=localhost`).
 
 **4. Khởi tạo Cơ sở dữ liệu (Database Migration)**
-
 - Mở Terminal tích hợp trong VS Code (Phím tắt: `` Ctrl + ` `` hoặc chọn menu **Terminal** > **New Terminal**).
 - Gõ lệnh sau và nhấn Enter để hệ thống tự động tạo Database từ các file Migration có sẵn:
   ```bash
@@ -55,8 +53,7 @@
 - Lưu ý: Nếu Terminal báo lỗi không nhận diện được lệnh dotnet ef, hãy chạy lệnh cài đặt tool này trước:
   ```bash
   dotnet tool install --global dotnet-ef
-  **5. Khởi chạy ứng dụng**
-  ```
+**5. Khởi chạy ứng dụng**
 - Tại Terminal, gõ lệnh sau để khởi động Web Server:
   ```bash
   dotnet run
